@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#" ,
+    "$id" : "http://dsp.polito.it/user_schema.json",
+    "title": "User",
+    "description": "JSON Schema for User",
+    "additionalProperties": false,
+
+    "type": "object",
+      "properties": {
+        "$schema": {
+      "type": "string",
+      "description": "path to the JSON Schema to use for the validation of the JSON data structure"
+    },
+        "id": { "type":"integer",
+      "description": "Unique identifier for the user"},
+        "name" : {"type":"string",
+      "description": "Username of the user"},
+        "email" : {"type":"string", "format": "email", "description": "Email of the user"},
+        "password": {"type":"string", "minLength": 6, "maxLength": 20,"description": "Password of the user"}
+      },
+      "required": ["id","email","password"]
+      
+
+}

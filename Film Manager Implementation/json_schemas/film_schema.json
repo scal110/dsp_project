@@ -1,0 +1,75 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://dsp.polito.it/film_schema.json",
+    "title" :"Film",
+    "description" : "JSON Schema for Film Data structures",
+    "additionalProperties": false,
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "description": "path to the JSON Schema to use for the validation of the data structure"
+        },
+        "id": {
+            "type": "integer",
+            "description": "Unique identifier of the film"
+        },
+        "title": {
+            "type": "string",
+            "description": "Title of the film"
+        },
+        "owner": {
+            "type": "integer",
+            "description": "Unique identifier of the film owner"
+        },
+        "private": {
+            "type": "boolean",
+            "default": true,
+            "description": "Its true if only the owner can access the film, false otherwise"
+        },
+        "watchDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The date when the owner watched the film"
+        },
+        "rating": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10,
+            "description": "the rating the owner has given to the film"
+        },
+        "favorite": {
+            "type": "boolean",
+            "default": "false",
+            "description": "Its true if the film is among the favorite of the owner"
+        }
+    },
+    "required": [
+        "title",
+        "owner",
+        "private"
+    ],
+    "dependencies": {
+        "watchDate": {
+            "properties": {
+                "private": {
+                    "const": true
+                }
+            }
+        },
+        "rating": {
+            "properties": {
+                "private": {
+                    "const": true
+                }
+            }
+        },
+        "favourite": {
+            "properties": {
+                "private": {
+                    "const": true
+                }
+            }
+        }
+    }
+}

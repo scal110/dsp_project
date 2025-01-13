@@ -1,0 +1,8 @@
+{
+    "$schema": "../schemas/film.json",
+    "id":1,
+    "title":"Proviamo ad iniziare",
+    "owner":"user1",
+    "private":false
+
+}
