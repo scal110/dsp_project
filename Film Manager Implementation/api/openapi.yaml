@@ -561,7 +561,7 @@ paths:
     get:
       tags: 
       - "api/films/public/{filmId}/reviews"
-      operationId: getReviews
+      operationId: getFilmReviews
       summary: retrieve the reviews of a specific public film.
       description: A generic user can retrieve all the reviews of a specific public film. 
         A pagination machanism is used in order to limit the size of the messages.
@@ -622,7 +622,7 @@ paths:
       - "api/films/public/{filmId}/reviews"
       security:
       - cookieAuth: []
-      operationId: issueFilmReview
+      operationId: issueFilmReviews
       summary: Issue film review to some users
       description: The owner of the public film, identified by filmId, assign it to one or more users and the relative reviews are created
                    with the completed property set to false.
@@ -739,7 +739,7 @@ paths:
       - "api/films/public/{filmId}/reviews/{reviewerId}"
       security:
       - cookieAuth: []
-      operationId: completeReview
+      operationId: completeSingleReview
       summary: Complete a review
       description: This operation allows to set the review, identified by the pair filmId, reviewerId, as completed.
          The completed property is set to true and the reviewDate, rating and review properties are changed

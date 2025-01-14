@@ -110,7 +110,7 @@ exports.completeSingleReview = function (req){
 }
 
 
-exports.deleteIncompleteReview= function (filmId,userId,reviewerId){
+exports.deleteReviewInvitation= function (filmId,userId,reviewerId){
     return new Promise((resolve,reject)=>{
         const sqlGet = "SELECT f.owner,r.completed FROM films f,reviews r WHERE f.id=r.filmId AND f.id = ? AND r.reviewerId= ?";
         db.get(sqlGet,[filmId,reviewerId], (err,row)=>{

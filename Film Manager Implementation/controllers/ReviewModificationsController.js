@@ -5,8 +5,8 @@ var writer = require("../utils/writer");
 var ReviewModifications = require("../service/ReviewModificationsService");
 var constants = require("../utils/costants");
 
-module.exports.requestModification = function requestModification(req, res, next) {
-    ReviewModifications.requestModification(req.params.filmId, req.params.reviewerId, req.body, req.user.id)
+module.exports.createReviewModificationRequest = function createReviewModificationRequest(req, res, next) {
+    ReviewModifications.createReviewModificationRequest(req.params.filmId, req.params.reviewerId, req.body, req.user.id)
         .then((response) => {
             writer.writeJson(res, response, 201);
         }).catch((error) => {
@@ -26,8 +26,8 @@ module.exports.requestModification = function requestModification(req, res, next
         })
 }
 
-module.exports.getSingleModificationRequest = function getSingleModificationRequest(req, res, next) {
-    ReviewModifications.getSingleModificationRequest(req.params.mId, req.user.id)
+module.exports.getSingleReviewModificationRequest = function getSingleReviewModificationRequest(req, res, next) {
+    ReviewModifications.getSingleReviewModificationRequest(req.params.mId, req.user.id)
         .then((response) => {
             writer.writeJson(res, response, 200);
         }).catch((error) => {
@@ -44,8 +44,8 @@ module.exports.getSingleModificationRequest = function getSingleModificationRequ
         })
 }
 
-module.exports.acceptModificationRequest = function acceptModificationRequest(req, res, next) {
-    ReviewModifications.acceptModificationRequest(req.params.mId, req.user.id)
+module.exports.acceptReviewModificationRequest = function acceptReviewModificationRequest(req, res, next) {
+    ReviewModifications.acceptReviewModificationRequest(req.params.mId, req.user.id)
         .then((response) => {
             writer.writeJson(res, response, 204);
         }).catch((error) => {
@@ -67,8 +67,8 @@ module.exports.acceptModificationRequest = function acceptModificationRequest(re
 
         })
 }
-module.exports.rejectModificationRequest = function rejectModificationRequest(req, res, next) {
-    ReviewModifications.rejectModificationRequest(req.params.mId, req.user.id)
+module.exports.rejectReviewModificationRequest = function rejectReviewModificationRequest(req, res, next) {
+    ReviewModifications.rejectReviewModificationRequest(req.params.mId, req.user.id)
         .then((response) => {
             writer.writeJson(res, response, 204);
         }).catch((error) => {
@@ -91,8 +91,8 @@ module.exports.rejectModificationRequest = function rejectModificationRequest(re
         })
 }
 
-module.exports.getReviewsModificationRequestsReceived = function getReviewsModificationRequestsReceived(req, res, next) {
-    ReviewModifications.getReviewsModificationRequestsReceived(req)
+module.exports.getReviewModificationRequestsReceived = function getReviewModificationRequestsReceived(req, res, next) {
+    ReviewModifications.getReviewModificationRequestsReceived(req)
         .then((response) => {
             var pageNo = parseInt(req.query.pageNo) || 1;
             if (pageNo<=0){

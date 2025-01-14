@@ -203,8 +203,8 @@ module.exports.getPrivateFilms =function getPrivateFilms(req,res,next){
                 })
             }
 
-            module.exports.getInvited = function getInvited(req, res, next) {
-                Films.getInvited(req)
+            module.exports.getInvitedFilms = function getInvitedFilms(req, res, next) {
+                Films.getInvitedFilms(req)
                     .then((response) => {
                         var pageNo = parseInt(req.query.pageNo) || 1;
                         if (pageNo<=0){

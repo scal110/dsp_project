@@ -134,11 +134,12 @@ paths:
       operationId: getOwnedFilms
       parameters:
         - in: query
-          name: pageNo
+          name: pageNo                  
           required: false
           schema:
             type: integer
-          description: The number of the requeted page. It's optional so if not expessed the first page is returned.
+            default: 1
+          description: The number of the requested page. It's optional so if not expessed the first page is returned.
       responses:
         "200":
           description: OK
@@ -194,6 +195,7 @@ paths:
           required: false
           schema:
             type: integer
+            default: 1
           description: The number of the requeted page. It's optional so if not expessed the first page is returned.
       responses:
         "200":
@@ -361,6 +363,7 @@ paths:
           required: false
           schema:
             type: integer
+            default: 1
           description: The number of the requested page. It's optional so if not expessed the first page is returned.
       responses:
         "200":
@@ -411,6 +414,7 @@ paths:
           required: false
           schema:
             type: integer
+            default: 1
           description: The number of the requested page. It's optional so if not expessed the first page is returned.
       responses:
         "200":
@@ -557,8 +561,8 @@ paths:
     get:
       tags: 
       - "api/films/public/{filmId}/reviews"
-      operationId: getReviews
-      summary: retrieve the completed reviews of a specific public film.
+      operationId: getFilmReviews
+      summary: retrieve the reviews of a specific public film.
       description: A generic user can retrieve all the reviews of a specific public film. 
         A pagination machanism is used in order to limit the size of the messages.
       parameters:
@@ -574,6 +578,7 @@ paths:
           required: false
           schema:
             type: integer
+            default: 1
           description: The number of the requested page. It's optional so if not expessed the first page is returned.
       responses:
         "200":
@@ -617,7 +622,7 @@ paths:
       - "api/films/public/{filmId}/reviews"
       security:
       - cookieAuth: []
-      operationId: issueFilmReview
+      operationId: issueFilmReviews
       summary: Issue film review to some users
       description: The owner of the public film, identified by filmId, assign it to one or more users and the relative reviews are created
                    with the completed property set to false.
@@ -734,7 +739,7 @@ paths:
       - "api/films/public/{filmId}/reviews/{reviewerId}"
       security:
       - cookieAuth: []
-      operationId: completeReview
+      operationId: completeSingleReview
       summary: Complete a review
       description: This operation allows to set the review, identified by the pair filmId, reviewerId, as completed.
          The completed property is set to true and the reviewDate, rating and review properties are changed
@@ -1023,6 +1028,8 @@ paths:
           required: false
           schema:
             type: integer
+            default: 1
+          description: The number of the requested page. It's optional so if not expessed the first page is returned.
       responses:
         "200":
           description: OK
@@ -1320,6 +1327,8 @@ paths:
           required: false
           schema:
             type: integer
+            default: 1
+          description: The number of the requested page. It's optional so if not expessed the first page is returned.
       responses:
         "200":
           description: OK
@@ -1376,6 +1385,8 @@ paths:
           required: false
           schema:
             type: integer
+            default: 1
+          description: The number of the requested page. It's optional so if not expessed the first page is returned.
       responses:
         "200":
           description: OK
@@ -1549,11 +1560,11 @@ components:
           description: The path to the schema used to validate the films data structure
         totalPages:
           type: integer
-          minimum: 0
+          minimum: 1
           description: the total number of pages
         currentPage:
           type: integer
-          minimum: 0
+          minimum: 1
           description: the number of the currentPage
         films:
           type: array
@@ -1597,10 +1608,18 @@ components:
           type: string
           maxLength: 1000
           description: a textual description of the review
+        film: 
+          type: string
+          format: uri
+          description: URI to access the film related to the review
+        delete: 
+          type: string
+          format: uri
+          description: URI to delete the modification request(if not completed).
         self:
           type: string
           format: uri
-          description: URI to access the specific review  resource
+          description: URI to access the specific review resource
       required:
         - filmId
         - reviewerId
@@ -1614,11 +1633,11 @@ components:
           description: path to the schema used to validate the reviews data structure
         totalPages:
           type: integer
-          minimum: 0
+          minimum: 1
           description: the total number of pages
         currentPage:
           type: integer
-          minimum: 0
+          minimum: 1
           description: the number of the currentPage
         reviews:
           type: array
@@ -1669,6 +1688,10 @@ components:
           type: string
           format: uri
           description: URI to reject the modification request.
+        delete: 
+          type: string
+          format: uri
+          description: URI to delete the modification request(if in a pending status).
         self:
           type: string
           format: uri
@@ -1687,11 +1710,11 @@ components:
           description: path to the schema used to validate the reviews data structure
         totalPages:
           type: integer
-          minimum: 0
+          minimum: 1
           description: the total number of pages
         currentPage:
           type: integer
-          minimum: 0
+          minimum: 1
           description: the number of the currentPage
         reviews:
           type: array

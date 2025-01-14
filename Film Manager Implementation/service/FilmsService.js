@@ -333,7 +333,7 @@ exports.deleteSinglePublicFilm = function (filmId,userId){
     })
 }
 
-exports.getInvited = function (req) {
+exports.getInvitedFilms = function (req) {
     return new Promise((resolve, reject) => {
 
         const sqlCount = "SELECT COUNT(*) total FROM reviews WHERE reviewerId = ?";

@@ -77,13 +77,13 @@ var reviewsModificationsController=require(path.join(__dirname,'controllers/Revi
 
 //NEWS
 
-app.post('/api/films/public/:filmId/reviews/:reviewerId/modifications',isLoggedIn,validate({body:reviewmodificationschema}),reviewsModificationsController.requestModification);
+app.post('/api/films/public/:filmId/reviews/:reviewerId/modifications',isLoggedIn,validate({body:reviewmodificationschema}),reviewsModificationsController.createReviewModificationRequest);
 app.get('/api/films/public/:filmId/reviews/:reviewerId/modifications',isLoggedIn,reviewsModificationsController.getSingleFilmReviewModificationRequests)
-app.get("/api/films/public/reviews/modifications/received",isLoggedIn,reviewsModificationsController.getReviewsModificationRequestsReceived);
+app.get("/api/films/public/reviews/modifications/received",isLoggedIn,reviewsModificationsController.getReviewModificationRequestsReceived);
 app.get("/api/films/public/reviews/modifications/status",isLoggedIn,reviewsModificationsController.getReviewModificationRequestsStatus);
-app.get('/api/films/public/reviews/modifications/:mId',isLoggedIn,reviewsModificationsController.getSingleModificationRequest);
-app.put('/api/films/public/reviews/modifications/:mId/accept',isLoggedIn,reviewsModificationsController.acceptModificationRequest);
-app.put('/api/films/public/reviews/modifications/:mId/reject',isLoggedIn,reviewsModificationsController.rejectModificationRequest);
+app.get('/api/films/public/reviews/modifications/:mId',isLoggedIn,reviewsModificationsController.getSingleReviewModificationRequest);
+app.put('/api/films/public/reviews/modifications/:mId/accept',isLoggedIn,reviewsModificationsController.acceptReviewModificationRequest);
+app.put('/api/films/public/reviews/modifications/:mId/reject',isLoggedIn,reviewsModificationsController.rejectReviewModificationRequest);
 app.delete('/api/films/public/reviews/modifications/:mId',isLoggedIn,reviewsModificationsController.deleteSingleReviewModificationRequest);
 
 ////////
@@ -91,7 +91,7 @@ app.get('/api', function(req, res, next) {writer.writeJson(res, new filmManager(
 app.post('/api/films/public/:filmId/reviews',isLoggedIn,reviewsController.issueFilmReviews)
 app.post('/api/films',isLoggedIn,validate({body:filmschema}),filmController.createFilm);
 app.get('/api/films',isLoggedIn,filmController.getOwnedFilms);
-app.get('/api/films/public/invited',isLoggedIn,filmController.getInvited);
+app.get('/api/films/public/invited',isLoggedIn,filmController.getInvitedFilms);
 app.get('/api/films/public', filmController.getPublicFilms);
 app.get('/api/films/public/:filmId', filmController.getSinglePublicFilm)
 app.get('/api/users',isLoggedIn, userController.getUsers);

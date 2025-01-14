@@ -4,7 +4,7 @@ const ReviewModification = require('../components/reviewModification');
 const db = require('../components/db');
 const constants = require('../utils/costants')
 
-exports.requestModification = function (filmId, reviewerId, mRequest, userId) {
+exports.createReviewModificationRequest = function (filmId, reviewerId, mRequest, userId) {
     return new Promise((resolve, reject) => {
         const sqlGet = "SELECT * FROM reviews WHERE filmId = ? AND reviewerId = ?"
 
@@ -22,13 +22,13 @@ exports.requestModification = function (filmId, reviewerId, mRequest, userId) {
                 reject(409)
             }
             else {
-                const sqlGet2 = "SELECT status FROM review_modifications  WHERE filmId = ? AND reviewerId = ?";
+                const sqlGet2 = "SELECT accepted FROM review_modifications  WHERE filmId = ? AND reviewerId = ?";
 
                 db.all(sqlGet2, [filmId, reviewerId], (err, rows) => {
                     if (err) {
                         reject(err);
                     }
-                    else if (rows.length > 0 && rows.map(r => r.status).includes(null)) {
+                    else if (rows.length > 0 && rows.map(r => r.accepted).includes(null)) {
                         reject(409);
                     }
                     else {
@@ -52,9 +52,9 @@ exports.requestModification = function (filmId, reviewerId, mRequest, userId) {
 }
 
 
-exports.getSingleModificationRequest = function (mId, userId) {
+exports.getSingleReviewModificationRequest = function (mId, userId) {
     return new Promise((resolve, reject) => {
-        const sqlGet = "SELECT f.owner as owner,m.mId, m.filmId,m.reviewerId,m.deadline,m.status FROM films f, review_modifications m WHERE f.id=m.filmId AND mId = ?";
+        const sqlGet = "SELECT f.owner as owner,m.mId, m.filmId,m.reviewerId,m.deadline,m.accepted FROM films f, review_modifications m WHERE f.id=m.filmId AND mId = ?";
         db.get(sqlGet, [mId], (err, row) => {
             if (err) {
                 reject(err);
@@ -72,9 +72,9 @@ exports.getSingleModificationRequest = function (mId, userId) {
     })
 }
 
-exports.acceptModificationRequest = function (mId, userId) {
+exports.acceptReviewModificationRequest = function (mId, userId) {
     return new Promise((resolve, reject) => {
-        const sqlGet = "SELECT f.owner as owner,m.filmId,m.reviewerId,m.status FROM films f, review_modifications m WHERE f.id=m.filmId AND mId = ?";
+        const sqlGet = "SELECT f.owner as owner,m.filmId,m.reviewerId,m.accepted FROM films f, review_modifications m WHERE f.id=m.filmId AND mId = ?";
         db.get(sqlGet, [mId], (err, row) => {
             if (err) {
                 reject(err);
@@ -85,11 +85,11 @@ exports.acceptModificationRequest = function (mId, userId) {
             else if (row.owner != userId) {
                 reject(403)
             }
-            else if (row.status !== null) {
+            else if (row.accepted !== null) {
                 reject(409)
             }
             else {
-                const sqlUpdate = "UPDATE review_modifications SET status = ? WHERE mId = ?";
+                const sqlUpdate = "UPDATE review_modifications SET accepted = ? WHERE mId = ?";
                 db.run(sqlUpdate, [true, mId], (err) => {
                     if (err) {
                         reject(err)
@@ -112,9 +112,9 @@ exports.acceptModificationRequest = function (mId, userId) {
 
 }
 
-exports.rejectModificationRequest = function (mId, userId) {
+exports.rejectReviewModificationRequest = function (mId, userId) {
     return new Promise((resolve, reject) => {
-        const sqlGet = "SELECT f.owner as owner,m.status FROM films f, review_modifications m WHERE f.id=m.filmId AND mId = ?";
+        const sqlGet = "SELECT f.owner as owner,m.accepted FROM films f, review_modifications m WHERE f.id=m.filmId AND mId = ?";
         db.get(sqlGet, [mId], (err, row) => {
             if (err) {
                 reject(err);
@@ -125,11 +125,11 @@ exports.rejectModificationRequest = function (mId, userId) {
             else if (row.owner != userId) {
                 reject(403)
             }
-            else if (row.status !== null) {
+            else if (row.accepted !== null) {
                 reject(409)
             }
             else {
-                const sqlUpdate = "UPDATE review_modifications SET status = ? WHERE mId = ?";
+                const sqlUpdate = "UPDATE review_modifications SET accepted = ? WHERE mId = ?";
                 db.run(sqlUpdate, [false, mId], (err) => {
                     if (err) {
                         reject(err)
@@ -144,7 +144,7 @@ exports.rejectModificationRequest = function (mId, userId) {
 
 }
 
-exports.getReviewsModificationRequestsReceived = function (req) {
+exports.getReviewModificationRequestsReceived = function (req) {
     return new Promise((resolve, reject) => {
         const sqlCount = 'SELECT COUNT(*) total FROM films f,review_modifications m WHERE f.id=m.filmId AND f.owner= ?';
 
@@ -161,7 +161,7 @@ exports.getReviewsModificationRequestsReceived = function (req) {
 
             // If the selected page is greater than the totalPages the last one is returned
             const limit = getPage((pageNo > total) ? total : pageNo);
-            let sqlGet = 'SELECT * FROM review_modifications WHERE filmId IN (SELECT id FROM films WHERE owner = ?) ORDER BY status IS NOT NULL, mId';
+            let sqlGet = 'SELECT * FROM review_modifications WHERE filmId IN (SELECT id FROM films WHERE owner = ?) ORDER BY accepted IS NOT NULL, mId';
 
 
 
@@ -187,7 +187,7 @@ exports.getReviewsModificationRequestsReceived = function (req) {
     });
 }
 
-exports.getReviewModificationRequestsStatus = function (req) {
+exports.getReviewModificationRequestsaccepted = function (req) {
     return new Promise((resolve, reject) => {
         const sqlCount = 'SELECT COUNT(*) total FROM review_modifications WHERE reviewerId = ?';
 
@@ -204,7 +204,7 @@ exports.getReviewModificationRequestsStatus = function (req) {
 
             // If the selected page is greater than the totalPages the last one is returned
             const limit = getPage((pageNo > total) ? total : pageNo);
-            let sqlGet = 'SELECT f.owner as owner, m.mId,m.filmId,m.reviewerId,m.deadline,m.status FROM films f,review_modifications m WHERE f.id=m.filmId AND m.reviewerId = ? ORDER BY status IS NOT NULL, m.mId';
+            let sqlGet = 'SELECT f.owner as owner, m.mId,m.filmId,m.reviewerId,m.deadline,m.accepted FROM films f,review_modifications m WHERE f.id=m.filmId AND m.reviewerId = ? ORDER BY accepted IS NOT NULL, m.mId';
 
 
 
@@ -246,7 +246,7 @@ exports.getSingleFilmReviewModificationRequests = function (req) {
 
             // If the selected page is greater than the totalPages the last one is returned
             const limit = getPage((pageNo > total) ? total : pageNo);
-            let sqlGet = 'SELECT f.owner as owner, m.mId,m.filmId,m.reviewerId,m.deadline,m.status FROM films f,review_modifications m WHERE f.id=m.filmId AND m.filmId= ? AND m.reviewerId = ? ORDER BY m.status IS NOT NULL, m.mId';
+            let sqlGet = 'SELECT f.owner as owner, m.mId,m.filmId,m.reviewerId,m.deadline,m.accepted FROM films f,review_modifications m WHERE f.id=m.filmId AND m.filmId= ? AND m.reviewerId = ? ORDER BY m.accepted IS NOT NULL, m.mId';
 
 
             if (limit.length !== 0) {
@@ -280,7 +280,7 @@ exports.getSingleFilmReviewModificationRequests = function (req) {
 
 exports.deleteSingleReviewModificationRequest = function (mId, userId) {
     return new Promise((resolve, reject) => {
-        const sqlGet = "SELECT reviewerId,status FROM review_modifications WHERE mId = ?";
+        const sqlGet = "SELECT reviewerId,accepted FROM review_modifications WHERE mId = ?";
         db.get(sqlGet, [mId], (err, row) => {
             if (err) {
                 reject(err);
@@ -291,7 +291,7 @@ exports.deleteSingleReviewModificationRequest = function (mId, userId) {
             else if (row.reviewerId !== userId) {
                 reject(403)
             }
-            else if (row.status !== null) {
+            else if (row.accepted !== null) {
                 reject(409)
             }
             else {
@@ -312,10 +312,10 @@ exports.deleteSingleReviewModificationRequest = function (mId, userId) {
 }
 
 
-const updateStatusAfterExpiration = function (mId) {
+const updateacceptedAfterExpiration = function (mId) {
 
     return new Promise((resolve, reject) => {
-        const sql = "UPDATE review_modifications SET status = 0 WHERE status IS NULL AND mId=?"
+        const sql = "UPDATE review_modifications SET accepted = 0 WHERE accepted IS NULL AND mId=?"
         db.run(sql, [mId], (err) => {
             if (err) {
                 reject(err);
@@ -343,15 +343,15 @@ const getPage = (pageNo) => {
 }
 
 const parseReviewModification = (row, isOwner, isReviewer) => {
-    let status = null
-    if (row.status !== null) {
-        status = Boolean(row.status)
+    let accepted = null
+    if (row.accepted !== null) {
+        accepted = Boolean(row.accepted)
     }
     else if (new Date(row.deadline) < new Date()) {
-        updateStatusAfterExpiration(row.mId);
-        status = false
+        updateacceptedAfterExpiration(row.mId);
+        accepted = false
         console.log("UPDATED")
     }
-    return new ReviewModification(row.mId, row.filmId, row.reviewerId, row.deadline, status, isOwner, isReviewer)
+    return new ReviewModification(row.mId, row.filmId, row.reviewerId, row.deadline, accepted, isOwner, isReviewer)
 
 }
