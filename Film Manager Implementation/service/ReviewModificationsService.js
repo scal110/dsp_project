@@ -45,15 +45,8 @@ exports.requestModification = function (filmId, reviewerId, mRequest, userId) {
 
                     }
                 })
-
-
-
-
             }
         })
-
-
-
     })
 
 }
@@ -73,7 +66,7 @@ exports.getSingleModificationRequest = function (mId, userId) {
                 reject(403)
             }
             else {
-                resolve(parseReviewModification(row, row.owner === userId,row.reviewerId===userId))
+                resolve(parseReviewModification(row, row.owner === userId, row.reviewerId === userId))
             }
         })
     })
@@ -163,7 +156,7 @@ exports.getReviewsModificationRequestsReceived = function (req) {
             }
 
 
-            const total = Math.ceil(size.total/constants.OFFSET);
+            const total = Math.ceil(size.total / constants.OFFSET);
             let pageNo = parseInt(req.query.pageNo) || 1;
 
             // If the selected page is greater than the totalPages the last one is returned
@@ -184,7 +177,7 @@ exports.getReviewsModificationRequestsReceived = function (req) {
                 }
                 let mRequests = [];
                 if (rows.length > 0) {
-                    mRequests = rows.map(row => parseReviewModification(row,true,row.reviewerId===req.user.id));
+                    mRequests = rows.map(row => parseReviewModification(row, true, row.reviewerId === req.user.id));
                 }
 
 
@@ -206,7 +199,7 @@ exports.getReviewModificationRequestsStatus = function (req) {
             }
 
 
-            const total = Math.ceil(size.total/constants.OFFSET);
+            const total = Math.ceil(size.total / constants.OFFSET);
             let pageNo = parseInt(req.query.pageNo) || 1;
 
             // If the selected page is greater than the totalPages the last one is returned
@@ -227,7 +220,7 @@ exports.getReviewModificationRequestsStatus = function (req) {
                 }
                 let mRequests = [];
                 if (rows.length > 0) {
-                    mRequests = rows.map(row => parseReviewModification(row,row.owner===req.user.id,row.reviewerId===req.user.id));
+                    mRequests = rows.map(row => parseReviewModification(row, row.owner === req.user.id, row.reviewerId === req.user.id));
                 }
 
 
@@ -248,7 +241,7 @@ exports.getSingleFilmReviewModificationRequests = function (req) {
             }
 
 
-            const total = Math.ceil(size.total/constants.OFFSET);
+            const total = Math.ceil(size.total / constants.OFFSET);
             let pageNo = parseInt(req.query.pageNo) || 1;
 
             // If the selected page is greater than the totalPages the last one is returned
@@ -275,7 +268,7 @@ exports.getSingleFilmReviewModificationRequests = function (req) {
                     }
 
                     else {
-                        mRequests = rows.map(row => parseReviewModification(row, row.owner === req.user.id,row.reviewerId===req.user.id));
+                        mRequests = rows.map(row => parseReviewModification(row, row.owner === req.user.id, row.reviewerId === req.user.id));
                     }
 
                 }
@@ -283,7 +276,7 @@ exports.getSingleFilmReviewModificationRequests = function (req) {
             });
         });
     });
-} 
+}
 
 exports.deleteSingleReviewModificationRequest = function (mId, userId) {
     return new Promise((resolve, reject) => {
@@ -340,16 +333,16 @@ const updateStatusAfterExpiration = function (mId) {
 
 
 const getPage = (pageNo) => {
-    var page = pageNo>0 ? pageNo : 1;
+    var page = pageNo > 0 ? pageNo : 1;
 
     var pageSize = parseInt(constants.OFFSET);
-    var limit=[];
-    limit.push(pageSize * (page -1) );
+    var limit = [];
+    limit.push(pageSize * (page - 1));
     limit.push(pageSize);
     return limit;
 }
 
-const parseReviewModification = (row, isOwner,isReviewer) => {
+const parseReviewModification = (row, isOwner, isReviewer) => {
     let status = null
     if (row.status !== null) {
         status = Boolean(row.status)
@@ -359,7 +352,6 @@ const parseReviewModification = (row, isOwner,isReviewer) => {
         status = false
         console.log("UPDATED")
     }
-    return new ReviewModification(row.mId, row.filmId, row.reviewerId, row.deadline, status, isOwner,isReviewer)
-
+    return new ReviewModification(row.mId, row.filmId, row.reviewerId, row.deadline, status, isOwner, isReviewer)
 
 }
