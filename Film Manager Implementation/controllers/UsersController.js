@@ -50,7 +50,7 @@ module.exports.authenticateUser = function authenticateUser (req, res, next) {
       req.login(user, (err) => {
         if (err)
           return next(err);
-        return res.json({ id: user.id, name: user.name, email: req.body.email});
+        return res.status(200).json({ id: user.id, name: user.name, email: req.body.email, self: '/api/users/'+user.id});
         
       });
     })(req, res, next);
@@ -63,7 +63,7 @@ module.exports.authenticateUser = function authenticateUser (req, res, next) {
         if(!response){
           writer.writeJson(res, response, 404);
        } else {
-         writer.writeJson(res, response);
+         writer.writeJson(res, response,200);
       }
       })
       .catch(function (response) {

@@ -95,7 +95,10 @@ module.exports.getReviewsModificationRequestsReceived = function getReviewsModif
     ReviewModifications.getReviewsModificationRequestsReceived(req)
         .then((response) => {
             var pageNo = parseInt(req.query.pageNo) || 1;
-            var totalPages = Math.ceil(response.total / constants.OFFSET);
+            if (pageNo<=0){
+                pageNo=1
+            }
+            var totalPages = response.total;
 
             writer.writeJson(res, {
                 totalPages: totalPages,
@@ -116,7 +119,10 @@ module.exports.getReviewModificationRequestsStatus = function getReviewModificat
     ReviewModifications.getReviewModificationRequestsStatus(req)
         .then((response) => {
             var pageNo = parseInt(req.query.pageNo) || 1;
-            var totalPages = Math.ceil(response.total / constants.OFFSET);
+            if (pageNo<=0){
+                pageNo=1
+            }
+            var totalPages = response.total;
 
             writer.writeJson(res, {
                 totalPages: totalPages,
@@ -137,7 +143,10 @@ module.exports.getSingleFilmReviewModificationRequests = function getSingleFilmR
     ReviewModifications.getSingleFilmReviewModificationRequests(req)
         .then((response) => {
             var pageNo = parseInt(req.query.pageNo) || 1;
-            var totalPages = Math.ceil(response.total / constants.OFFSET);
+            if (pageNo<=0){
+                pageNo=1
+            }
+            var totalPages = response.total;
 
             writer.writeJson(res, {
                 totalPages: totalPages,

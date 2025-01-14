@@ -1,8 +1,11 @@
 {
-    "$schema": "../schemas/review.json",
+    "$schema": "./review_schema.json",
     "filmId": 1,
     "reviewerId": 1,
-    "completed":false 
+    "completed":true,
+    "reviewDate": "2024-11-30",
+    "rating": 9,
+    "review": "It was amazing!"
     
 
 }

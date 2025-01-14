@@ -39,7 +39,7 @@ exports.requestModification = function (filmId, reviewerId, mRequest, userId) {
                                 reject(err)
                             }
                             else {
-                                resolve(new ReviewModification(this.lastID, filmId, reviewerId, mRequest.deadline))
+                                resolve(new ReviewModification(this.lastID, parseInt(filmId), parseInt(reviewerId), mRequest.deadline))
                             }
                         })
 
@@ -73,7 +73,7 @@ exports.getSingleModificationRequest = function (mId, userId) {
                 reject(403)
             }
             else {
-                resolve(parseReviewModification(row, row.owner === userId))
+                resolve(parseReviewModification(row, row.owner === userId,row.reviewerId===userId))
             }
         })
     })
@@ -163,11 +163,11 @@ exports.getReviewsModificationRequestsReceived = function (req) {
             }
 
 
-            const total = size.total;
+            const total = Math.ceil(size.total/constants.OFFSET);
             let pageNo = parseInt(req.query.pageNo) || 1;
 
             // If the selected page is greater than the totalPages the last one is returned
-            const limit = getPage(pageNo > total ? total : pageNo);
+            const limit = getPage((pageNo > total) ? total : pageNo);
             let sqlGet = 'SELECT * FROM review_modifications WHERE filmId IN (SELECT id FROM films WHERE owner = ?) ORDER BY status IS NOT NULL, mId';
 
 
@@ -184,7 +184,7 @@ exports.getReviewsModificationRequestsReceived = function (req) {
                 }
                 let mRequests = [];
                 if (rows.length > 0) {
-                    mRequests = rows.map(row => parseReviewModification(row));
+                    mRequests = rows.map(row => parseReviewModification(row,true,row.reviewerId===req.user.id));
                 }
 
 
@@ -206,12 +206,12 @@ exports.getReviewModificationRequestsStatus = function (req) {
             }
 
 
-            const total = size.total;
+            const total = Math.ceil(size.total/constants.OFFSET);
             let pageNo = parseInt(req.query.pageNo) || 1;
 
             // If the selected page is greater than the totalPages the last one is returned
-            const limit = getPage(pageNo > total ? total : pageNo);
-            let sqlGet = 'SELECT * FROM review_modifications WHERE reviewerId = ? ORDER BY status IS NOT NULL, mId';
+            const limit = getPage((pageNo > total) ? total : pageNo);
+            let sqlGet = 'SELECT f.owner as owner, m.mId,m.filmId,m.reviewerId,m.deadline,m.status FROM films f,review_modifications m WHERE f.id=m.filmId AND m.reviewerId = ? ORDER BY status IS NOT NULL, m.mId';
 
 
 
@@ -227,7 +227,7 @@ exports.getReviewModificationRequestsStatus = function (req) {
                 }
                 let mRequests = [];
                 if (rows.length > 0) {
-                    mRequests = rows.map(row => parseReviewModification(row));
+                    mRequests = rows.map(row => parseReviewModification(row,row.owner===req.user.id,row.reviewerId===req.user.id));
                 }
 
 
@@ -248,11 +248,11 @@ exports.getSingleFilmReviewModificationRequests = function (req) {
             }
 
 
-            const total = size.total;
+            const total = Math.ceil(size.total/constants.OFFSET);
             let pageNo = parseInt(req.query.pageNo) || 1;
 
             // If the selected page is greater than the totalPages the last one is returned
-            const limit = getPage(pageNo > total ? total : pageNo);
+            const limit = getPage((pageNo > total) ? total : pageNo);
             let sqlGet = 'SELECT f.owner as owner, m.mId,m.filmId,m.reviewerId,m.deadline,m.status FROM films f,review_modifications m WHERE f.id=m.filmId AND m.filmId= ? AND m.reviewerId = ? ORDER BY m.status IS NOT NULL, m.mId';
 
 
@@ -275,7 +275,7 @@ exports.getSingleFilmReviewModificationRequests = function (req) {
                     }
 
                     else {
-                        mRequests = rows.map(row => parseReviewModification(row, row.owner === req.user.id));
+                        mRequests = rows.map(row => parseReviewModification(row, row.owner === req.user.id,row.reviewerId===req.user.id));
                     }
 
                 }
@@ -283,7 +283,7 @@ exports.getSingleFilmReviewModificationRequests = function (req) {
             });
         });
     });
-}
+} 
 
 exports.deleteSingleReviewModificationRequest = function (mId, userId) {
     return new Promise((resolve, reject) => {
@@ -340,15 +340,16 @@ const updateStatusAfterExpiration = function (mId) {
 
 
 const getPage = (pageNo) => {
+    var page = pageNo>0 ? pageNo : 1;
 
     var pageSize = parseInt(constants.OFFSET);
-    var limit = [];
-    limit.push(pageSize * (pageNo - 1));
+    var limit=[];
+    limit.push(pageSize * (page -1) );
     limit.push(pageSize);
     return limit;
 }
 
-const parseReviewModification = (row, isOwner) => {
+const parseReviewModification = (row, isOwner,isReviewer) => {
     let status = null
     if (row.status !== null) {
         status = Boolean(row.status)
@@ -358,7 +359,7 @@ const parseReviewModification = (row, isOwner) => {
         status = false
         console.log("UPDATED")
     }
-    return new ReviewModification(row.mId, row.filmId, row.reviewerId, row.deadline, status, isOwner)
+    return new ReviewModification(row.mId, row.filmId, row.reviewerId, row.deadline, status, isOwner,isReviewer)
 
 
 }

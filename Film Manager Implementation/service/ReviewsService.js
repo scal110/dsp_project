@@ -7,29 +7,29 @@ const constants = require('../utils/costants')
 
 exports.getFilmReviews = function (req) {
     return new Promise((resolve, reject) => {
-        const sqlCount = 'SELECT COUNT(*) total FROM reviews  WHERE filmId= ? AND completed = ?';
+        const sqlCount = 'SELECT COUNT(*) total FROM reviews  WHERE filmId= ?';
         let filmId = req.params.filmId
 
-        db.get(sqlCount, [filmId, 1], (err, size) => {
+        db.get(sqlCount, [filmId], (err, size) => {
             if (err) {
                 reject(err);
                 return;
             }
 
-            const total = size.total;
+            const total = Math.ceil(size.total/constants.OFFSET);
             let pageNo = parseInt(req.query.pageNo) || 1;
 
             // If the selected page is greater than the totalPages the last one is returned
-            const limit = getPage(pageNo > size.total ? size.total : pageNo);
+            const limit = getPage((pageNo > total) ? total : pageNo);
 
-            let sqlGet = 'SELECT f.owner as owner,r.filmId,r.reviewerid,r.completed,r.reviewDate,r.rating,r.review FROM films f,reviews r WHERE f.id=r.filmId AND r.filmId = ? AND completed = ?';
+            let sqlGet = 'SELECT f.owner as owner,r.filmId,r.reviewerid,r.completed,r.reviewDate,r.rating,r.review FROM films f,reviews r WHERE f.id=r.filmId AND r.filmId = ?';
 
             if (limit.length !== 0) {
                 sqlGet = sqlGet + ' LIMIT ?,?';
             }
 
 
-            db.all(sqlGet, [filmId, 1, ...limit], (err, rows) => {
+            db.all(sqlGet, [filmId, ...limit], (err, rows) => {
                 if (err) {
                     reject(err);
                     return;
@@ -56,6 +56,14 @@ exports.getSingleReview = function (req) {
             else if (!row) {
                 reject(404);
             }
+            else if(!row.completed){
+                if(req.user && req.user.id!== row.owner && req.user.id !==row.reviewerId){
+                    reject(404);
+                }
+                else{
+                    resolve(parseReview(row,req.user));
+                }
+            }
             else {
                 resolve(parseReview(row,req.user));
             }
@@ -69,10 +77,6 @@ exports.completeSingleReview = function (req){
     return new Promise((resolve,reject)=>{
         const sqlGet = "SELECT reviewerId, completed FROM reviews WHERE filmId = ? AND reviewerId= ? ";
         let review = req.body;
- /*       if (!review.watchDate || !review.rating || !review.review){
-            reject(400);
-            return;
-        } */
         db.get(sqlGet,[req.params.filmId,req.params.reviewerId],(err,row)=>{
             if(err){
                 reject(err);
@@ -138,12 +142,12 @@ exports.deleteIncompleteReview= function (filmId,userId,reviewerId){
 }
 
 
-exports.issueFilmReviews= function (invitations,userId){
+exports.issueFilmReviews= function (invitations,userId,filmId){
     return new Promise((resolve,reject)=>{
 
         const sqlGet1 = "SELECT id,owner, private FROM films WHERE id = ?";
 
-        db.get(sqlGet1,invitations[0].filmId,(err,filmRow)=>{
+        db.get(sqlGet1,filmId,(err,filmRow)=>{
             if(err){
                 reject(err);
             }
@@ -168,19 +172,23 @@ exports.issueFilmReviews= function (invitations,userId){
                     if(err){
                         reject(err);
                     }
-                    else if (rows.length!== invitations.length){
+                    else if (rows.length !== invitations.length){
                         reject(409);
                     }
                     else{
-                        const sqlInsert= "INSERT INTO reviews(filmId,reviewerID,completed) VALUES (?,?,?)";
+                        const sqlInsert= "INSERT INTO reviews(filmId,reviewerId,completed) VALUES (?,?,?)";
                         var result = [];
                         for (let i=0; i<invitations.length;i++){
                             try{
-                                result[i]= await issueSingleFilmReview(sqlInsert,parseInt(filmRow.id),invitations[i].reviewerId)
+                                result[i]= await issueSingleFilmReview(sqlInsert,parseInt(filmId),invitations[i].reviewerId,0)
                             }
                             catch(err){
-                                reject ("Error during the creation of the review data structure");
-                                break;
+                                if (err.code === 'SQLITE_CONSTRAINT'){
+                                    reject(409)
+                                }
+                                else{
+                                reject (err);
+                                }
 
                             }
 
@@ -235,20 +243,28 @@ exports.issueFilmReviews= function (invitations,userId){
 
 
 const getPage = (pageNo) => {
+    var page = pageNo>0 ? pageNo : 1;
 
-        var pageSize = parseInt(constants.OFFSET);
-        var limit = [];
-        limit.push(pageSize * (pageNo - 1));
-        limit.push(pageSize);
-        return limit;
-    }
+    var pageSize = parseInt(constants.OFFSET);
+    var limit=[];
+    limit.push(pageSize * (page -1) );
+    limit.push(pageSize);
+    return limit;
+}
 
     const parseReview = (row,user) => {
         let showModificationRequests= false;
         if(user && (user.id===row.owner || user.id === row.reviewerId)){
             showModificationRequests=true
         }
-        return new Review(row.filmId, row.reviewerId, Boolean(row.completed), row.reviewDate, row.rating, row.review,showModificationRequests)
+        let isReviewer=false
+        if(user && user.id===row.reviewerId){
+            isReviewer=true
+        }
+
+
+
+        return new Review(row.filmId, row.reviewerId, Boolean(row.completed), row.reviewDate, row.rating, row.review,showModificationRequests,isReviewer)
 
 
     }

@@ -21,7 +21,10 @@ module.exports.getPublicFilms = function getPublicFilms(req,res,next){
     Films.getPublicFilms(req).
     then((response)=>{
         var pageNo= parseInt(req.query.pageNo) || 1;
-        var totalPages=Math.ceil(response.total/constants.OFFSET);
+        if (pageNo<=0){
+            pageNo=1
+        }
+        var totalPages=response.total;
 
         writer.writeJson(res, {
             totalPages:totalPages,
@@ -31,11 +34,30 @@ module.exports.getPublicFilms = function getPublicFilms(req,res,next){
 
         },200)
 
+    }).catch((error)=>{
+        writer.writeJson(res, {
+            errors:[{'param':'Server','msg':error}]
+        },500);
 
+    });
+};
 
+module.exports.getOwnedFilms = function getOwnedFilms(req,res,next){
+    Films.getOwnedFilms(req).
+    then((response)=>{
+        var pageNo= parseInt(req.query.pageNo) || 1;
+        if (pageNo<=0){
+            pageNo=1
+        }
+        var totalPages=response.total;
 
+        writer.writeJson(res, {
+            totalPages:totalPages,
+            currentPage:pageNo>=totalPages ?totalPages : pageNo,
+            films:response.films,
+            next: (pageNo<totalPages) ? "/api/films?pageNo=" + (pageNo+1) : null
 
-
+        },200)
 
     }).catch((error)=>{
         writer.writeJson(res, {
@@ -64,7 +86,10 @@ module.exports.getPrivateFilms =function getPrivateFilms(req,res,next){
     Films.getPrivateFilms(req)
         .then((response)=>{
             var pageNo= parseInt(req.query.pageNo) || 1;
-            var totalPages=Math.ceil(response.total/constants.OFFSET);
+            if (pageNo<=0){
+                pageNo=1
+            }
+            var totalPages=response.total;
     
             writer.writeJson(res, {
                 totalPages:totalPages,
@@ -182,7 +207,10 @@ module.exports.getPrivateFilms =function getPrivateFilms(req,res,next){
                 Films.getInvited(req)
                     .then((response) => {
                         var pageNo = parseInt(req.query.pageNo) || 1;
-                        var totalPages = Math.ceil(response.total / constants.OFFSET);
+                        if (pageNo<=0){
+                            pageNo=1
+                        }
+                        var totalPages = response.total;
             
                         writer.writeJson(res, {
                             totalPages: totalPages,

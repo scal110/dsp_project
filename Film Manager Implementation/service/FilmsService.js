@@ -35,11 +35,11 @@ exports.getPublicFilms = function(req){
                 return;
             }
 
-            const total = size.total;
+            const total = Math.ceil(size.total/constants.OFFSET);
             let pageNo = parseInt(req.query.pageNo) || 1;
 
             // If the selected page is greater than the totalPages the last one is returned
-            const limit = getPage(pageNo>size.total ? size.total : pageNo);
+            const limit = getPage(pageNo>total ? total : pageNo);
             let sqlFilms = 'SELECT * FROM films WHERE private=0';
 
             
@@ -49,6 +49,45 @@ exports.getPublicFilms = function(req){
 
             
             db.all(sqlFilms, limit, (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                let films = rows.map(row => parseFilm(row));
+
+                
+                resolve({ total: total, films: films });
+            });
+        });
+    });
+}
+
+exports.getOwnedFilms = function(req){
+    return new Promise((resolve, reject) => {
+        const sqlCount = 'SELECT COUNT(*) total FROM films WHERE owner= ?';
+        
+        
+        db.get(sqlCount, [req.user.id], (err, size) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+
+            const total = Math.ceil(size.total/constants.OFFSET);
+            let pageNo = parseInt(req.query.pageNo) || 1;
+
+            // If the selected page is greater than the totalPages the last one is returned
+            const limit = getPage((pageNo>total )? total : pageNo);
+            let sqlFilms = 'SELECT * FROM films WHERE owner= ?';
+
+            
+            if (limit.length !== 0) {
+                sqlFilms = sqlFilms + ' LIMIT ?,?';
+            }
+
+            
+            db.all(sqlFilms, [req.user.id,...limit], (err, rows) => {
                 if (err) {
                     reject(err);
                     return;
@@ -204,11 +243,11 @@ exports.getPrivateFilms = function(req){
                     return;
                 }
     
-                const total = size.total;
+                const total = Math.ceil(size.total/constants.OFFSET);
                 var pageNo = parseInt(req.query.pageNo) || 1;
     
                 // If the selected page is greater than the totalPages the last one is returned
-                const limit = getPage(pageNo>size.total ? size.total : pageNo);
+                const limit = getPage((pageNo>total) ? total : pageNo);
                 let sqlFilms = 'SELECT * FROM films WHERE private=1 AND owner=?';
     
                 
@@ -305,11 +344,11 @@ exports.getInvited = function (req) {
                 return;
             }
 
-            const total = size.total;
+            const total = Math.ceil(size.total/constants.OFFSET);
             let pageNo = parseInt(req.query.pageNo) || 1;
 
             // If the selected page is greater than the totalPages the last one is returned
-            const limit = getPage(pageNo > size.total ? size.total : pageNo);
+            const limit = getPage((pageNo > total) ? size.total : pageNo);
 
 
             let sqlGet = "SELECT * FROM films WHERE id IN (SELECT filmId FROM reviews WHERE reviewerId= ?)";
@@ -350,10 +389,11 @@ exports.getInvited = function (req) {
 
 
 const getPage = (pageNo) => {
+    let page = (pageNo>0) ? pageNo : 1;
 
     var pageSize = parseInt(constants.OFFSET);
     var limit=[];
-    limit.push(pageSize * (pageNo -1) );
+    limit.push(pageSize * (page -1) );
     limit.push(pageSize);
     return limit;
 }

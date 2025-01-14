@@ -1,0 +1,42 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://dsp.polito.it/review_modification_schema.json",
+    "title": "Review Modification Request",
+    "description": "JSON Schema for review modification request",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "$schema": {
+        "type": "string",
+        "description": "path to the JSON Schema to use for the validation of the data structure"
+      },
+      "mId": {
+        "type": "integer",
+        "description": "Unique identifier of the review modification request"
+    },
+        "filmId": {
+            "type": "integer",
+            "description": "unique identifier of the film which the review modification request is related "
+        },
+        "reviewerId": {
+            "type": "integer",
+            "description": "unique identifier of the user who sent the review modfication request"
+        },
+        "deadline": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The deadline by wich an answer is expected"
+        },
+        "status":{
+          "type": ["boolean","null"],
+          "default": null,
+          "description": "Its true if the request is accepted, false if if the request is refused or null if the request is pending"
+        }
+    },
+    "required": [
+        "filmId",
+        "reviewerId",
+        "deadline"
+    ]
+   
+}

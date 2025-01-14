@@ -90,6 +90,7 @@ app.delete('/api/films/public/reviews/modifications/:mId',isLoggedIn,reviewsModi
 app.get('/api', function(req, res, next) {writer.writeJson(res, new filmManager());});
 app.post('/api/films/public/:filmId/reviews',isLoggedIn,reviewsController.issueFilmReviews)
 app.post('/api/films',isLoggedIn,validate({body:filmschema}),filmController.createFilm);
+app.get('/api/films',isLoggedIn,filmController.getOwnedFilms);
 app.get('/api/films/public/invited',isLoggedIn,filmController.getInvited);
 app.get('/api/films/public', filmController.getPublicFilms);
 app.get('/api/films/public/:filmId', filmController.getSinglePublicFilm)

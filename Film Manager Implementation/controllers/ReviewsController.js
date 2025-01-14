@@ -10,7 +10,10 @@ module.exports.getFilmReviews = function getFilmReviews(req, res, next) {
 
         .then((response) => {
             let pageNo = parseInt(req.query.pageNo) || 1;
-            let totalPages = Math.ceil(response.total / constants.OFFSET);
+            if (pageNo<=0){
+                pageNo=1
+            }
+            let totalPages = response.total;
 
             writer.writeJson(res, {
                 totalPages: totalPages,
@@ -89,22 +92,27 @@ module.exports.deleteIncompleteReview = function deleteIncompleteReview(req, res
 }
 
 module.exports.issueFilmReviews= function issueFlmReviews(req,res,next){
-    Reviews.issueFilmReviews(req.body,req.user.id)
+    if (req.body.length==0){
+        writer.writeJson(res, { errors: [{ 'param': 'Server', 'msg': 'The body is empty' }] }, 400)
+    }
+    else{
+    Reviews.issueFilmReviews(req.body,req.user.id,req.params.filmId)
     .then((response) => {
         writer.writeJson(res, response, 201);
     }).catch((error) => {
-        if (error == 403) {
+         if (error == 403) {
             writer.writeJson(res, { errors: [{ 'param': 'Server', 'msg': 'The user is not the owner of the film' }] }, 403)
         }
         else if (error == 404) {
             writer.writeJson(res, { errors: [{ 'param': 'Server', 'msg': 'Film Not Found' }] }, 404);
         }
         else if (error == 409){
-            writer.writeJson(res, { errors: [{ 'param': 'Server', 'msg': 'Invalid film or reviewerId' }] }, 404);
+            writer.writeJson(res, { errors: [{ 'param': 'Server', 'msg': 'Invalid film or reviewerId' }] }, 409);
         }
         else {
             writer.writeJson(res, { errors: [{ 'param': 'Server', 'msg': error }] }, 500);
         }
 
     })
+}
 }

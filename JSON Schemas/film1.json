@@ -1,8 +1,11 @@
 {
-    "$schema": "../schemas/film.json",
+    "$schema": "./film_schema.json",
     "id":1,
-    "title":"Proviamo ad iniziare",
-    "owner":"user1",
-    "private":false
+    "title":"Inside Out 2",
+    "owner":1,
+    "private":true,
+    "watchDate": "2024-11-13",
+    "rating":9,
+    "favorite": true
 
 }

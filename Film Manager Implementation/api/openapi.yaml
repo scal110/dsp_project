@@ -5,6 +5,8 @@ info:
   description: REST APIs that alllows to interact with the Film Manager Service
 
 tags:
+- name: api
+  description: The entry point of the Film Manager Rest interface
 - name: api/films 
   description: The set of all the films
 - name: api/films/private
@@ -18,7 +20,7 @@ tags:
 - name: api/films/public/{filmId}/reviews
   description: The set of all review invitations for a single public film identified by filmId
 - name: api/films/public/{filmId}/reviews/{reviewerId}
-  description: The review invitation for a single public film iditified by filmId issued to the user identified by reviewerId
+  description: The review invitation for a single public film identified by filmId issued to the user identified by reviewerId
 - name: api/users 
   description: The set of all the users
 - name: api/users/{userId}
@@ -29,11 +31,24 @@ tags:
   description: The automatic assignment of review invitations to users
 - name: api/films/public/invited
   description: The set of public films for which a review inviatation has been issued
-
+- name: api/film/public/{filmId}/reviews/{reviewerId}/modifications
+  description: The modifications related to a specific review
+- name: api/film/public/reviews/modifications/{mId}
+  description: The review modification request identified by mId
+- name: api/film/public/reviews/modifications/{mId}/accept
+  description: The operation to accept a review modification request
+- name: api/film/public/reviews/modifications/{mId}/reject
+  description: The operation to reject a review modification request
+- name: api/films/public/reviews/modifications/received
+  description: The set of review modification requests received
+- name: api/films/public/reviews/modifications/status
+  description: The set of review modification requests sent
 
 paths:
   "/api": 
     get:
+      tags:
+        - api
       summary: Retrieve the Film Manager
       description: Represents the entry point of the REST interface. No authentication required.
       operationId: getFilManager
@@ -62,6 +77,20 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/Film"
+            examples:
+              example1:
+                value:
+                  title: Inside Out 2
+                  owner: 1
+                  private: true
+                  watchDate: "2024-11-27"
+                  rating : 9
+                  favorite: false
+              example2:
+                value:
+                  title: Inception
+                  owner: 1
+                  private: false
         required: true
       responses:
         "201":
@@ -70,8 +99,82 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Film"
+              examples:
+                example1:
+                  value:
+                    id: 10
+                    title: Inside Out 2
+                    owner: 1
+                    private: true
+                    watchDate: "2024-11-27"
+                    rating : 9
+                    favorite: false
+                    self: /api/films/public/10
+                example2:
+                  value:
+                    id: 11
+                    title: Inception,
+                    owner: 1
+                    private: false
+                    reviews: /api/films/public/11/reviews
+                    self: /api/films/public/11
         "400":
           description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+    get:
+      tags: 
+      - "api/films"
+      summary: Retrive all the films created by the authenticated user.
+      description: An authenticated user can create all the films that he created.  A pagination machanism is used in order to limit the size of the messages.
+      security:
+        - cookieAuth: []
+      operationId: getOwnedFilms
+      parameters:
+        - in: query
+          name: pageNo                  
+          required: false
+          schema:
+            type: integer
+            default: 1
+          description: The number of the requested page. It's optional so if not expessed the first page is returned.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Films"
+              example:
+                {totalPages: 3,
+                currentPage: 1,
+                films: [
+                    {
+                      id: 10,
+                      title: Inside Out 2,
+                      owner: 1,
+                      private: true,
+                      watchDate: "2024-11-27",
+                      rating : 9,
+                      favorite: false,
+                      self: /api/films/public/10
+                    },
+                    {
+                        id: 11,
+                        title: Inception,
+                        owner: 1,
+                        private: false,
+                        reviews: /api/films/public/11/reviews,
+                        self: /api/films/public/11
+                    }
+                ],
+                next: /api/films?pageNo=2
+                }
+            
+
+
         "401":
           description: Unauthorized
         "500":
@@ -92,6 +195,7 @@ paths:
           required: false
           schema:
             type: integer
+            default: 1
           description: The number of the requeted page. It's optional so if not expessed the first page is returned.
       responses:
         "200":
@@ -100,6 +204,31 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Films"
+              example: 
+                {
+                  "totalPages": 1,
+                  "currentPage": 1,
+                  "films": [
+                      {
+                          "id": 1,
+                          "title": "Your Name",
+                          "owner": 1,
+                          "private": true,
+                          "watchDate": "2021-10-03",
+                          "rating": 9,
+                          "self": "/api/films/private/1"
+                      },
+                      {
+                          "id": 4,
+                          "title": "Weathering with You",
+                          "owner": 1,
+                          "private": true,
+                          "self": "/api/films/private/4"
+                      }
+                  ],
+                  "next": null
+              }
+              
         "401":
           description: Unauthorized
         "500":
@@ -120,6 +249,7 @@ paths:
           schema:
             type: integer
             format: int64
+            example: 10
       responses:
         "200":
           description: OK
@@ -127,6 +257,15 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Film"
+              example: 
+                id: 10
+                title: Inside Out 2
+                owner: 1
+                private: true
+                watchDate: "2024-11-27"
+                rating : 9
+                favorite: false
+                self: /api/films/public/10
 
         "401":
           description: Unauthorized
@@ -151,20 +290,24 @@ paths:
           schema:
             type: integer
             format: int64
+            example: 10
       requestBody:
         description: The film object that must be replaced to the old one
         content:
           application/json:
             schema:
               "$ref": "#/components/schemas/Film"
+            example:
+              title: Inside Out 2
+              owner: 1
+              private: true
+              watchDate: "2024-11-27"
+              rating : 10
+              favorite: true
         required: true
       responses:
         "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Film"
+          description: Succesfully Updated           
         "400":
           description: Bad Request
         "401":
@@ -193,6 +336,7 @@ paths:
           schema:
             type: integer
             format: int64
+            example: 10
       responses:
         "204":
           description: Successfully Deleted
@@ -219,6 +363,7 @@ paths:
           required: false
           schema:
             type: integer
+            default: 1
           description: The number of the requested page. It's optional so if not expessed the first page is returned.
       responses:
         "200":
@@ -227,6 +372,30 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Films"
+              example: 
+                {
+                  "totalPages": 3,
+                  "currentPage": 1,
+                  "films": [
+                      {
+                          "id": 2,
+                          "title": "Heaven's Feel",
+                          "owner": 2,
+                          "private": false,
+                          "reviews": "/api/films/public/2/reviews",
+                          "self": "/api/films/public/2"
+                      },
+                      {
+                          "id": 3,
+                          "title": "You Can (Not) Redo",
+                          "owner": 1,
+                          "private": false,
+                          "reviews": "/api/films/public/3/reviews",
+                          "self": "/api/films/public/3"
+                      }
+                  ],
+                  "next": "/api/films/public?pageNo=2"
+              }
         "500":
           description: Internal Server Error
   "/api/films/public/invited":
@@ -245,6 +414,7 @@ paths:
           required: false
           schema:
             type: integer
+            default: 1
           description: The number of the requested page. It's optional so if not expessed the first page is returned.
       responses:
         "200":
@@ -253,6 +423,30 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Films"
+              example: 
+                {
+                  "totalPages": 2,
+                  "currentPage": 1,
+                  "films": [
+                      {
+                          "id": 3,
+                          "title": "You Can (Not) Redo",
+                          "owner": 1,
+                          "private": false,
+                          "reviews": "/api/films/public/3/reviews",
+                          "self": "/api/films/public/3"
+                      },
+                      {
+                          "id": 4,
+                          "title": "Weathering with You",
+                          "owner": 1,
+                          "private": false,
+                          "reviews": "/api/films/public/4/reviews",
+                          "self": "/api/films/public/4"
+                      }
+                  ],
+                  "next": "/api/films/public/invited?pageNo=2"
+              }
         "401":
           description: Unauthorized
         "500":
@@ -274,6 +468,7 @@ paths:
           schema:
             type: integer
             format: int64
+            example: 11
       responses:
         "200":
           description: OK
@@ -281,6 +476,13 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Film"
+              example: 
+                id: 11
+                title: Inception
+                owner: 1
+                private: false
+                reviews: /api/films/public/11/reviews
+                self: /api/films/public/11
         "404":
           description: Not Found
         "500":
@@ -300,20 +502,21 @@ paths:
           schema:
             type: integer
             format: int64
+            example: 11
       requestBody:
         description: The film object that must be replaced to the old one
         content:
           application/json:
             schema:
               "$ref": "#/components/schemas/Film"
+            example: 
+              title: Inception Remake
+              owner: 1
+              private: false
         required: true
       responses:
         "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Film"
+          description: Succesfully Updated
         "400":
           description: Bad Request
         "401":
@@ -342,6 +545,7 @@ paths:
           schema:
             type: integer
             format: int64
+            example: 11
       responses:
         "204":
           description: Successfully Deleted
@@ -359,7 +563,8 @@ paths:
       - "api/films/public/{filmId}/reviews"
       operationId: getReviews
       summary: retrieve the reviews of a specific public film.
-      description: A generic user can retrieve all the reviews of a specific public film. A pagination machanism is used in order to limit the size of the messages.
+      description: A generic user can retrieve all the reviews of a specific public film. 
+        A pagination machanism is used in order to limit the size of the messages.
       parameters:
         - name: filmId
           in: path
@@ -367,12 +572,14 @@ paths:
           schema:
             type: integer
             format: int64
+            example: 2
         - in: query
           name: pageNo
           required: false
           schema:
             type: integer
-          description: The number of the requeted page. It's optional so if not expessed the first page is returned.
+            default: 1
+          description: The number of the requested page. It's optional so if not expessed the first page is returned.
       responses:
         "200":
           description: OK
@@ -380,6 +587,32 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Reviews"
+              example: 
+                {
+                  "totalPages": 1,
+                  "currentPage": 1,
+                  "reviews": [
+                      {
+                          "filmId": 2,
+                          "reviewerId": 2,
+                          "completed": true,
+                          "reviewDate": "2022-04-04",
+                          "rating": 10,
+                          "review": "I could not stop watching until the very end. However, you must watch the prequels before this film to really understand it.",
+                          "self": "/api/films/public/2/reviews/2"
+                      },
+                      {
+                          "filmId": 2,
+                          "reviewerId": 5,
+                          "completed": true,
+                          "reviewDate": "2022-03-04",
+                          "rating": 10,
+                          "review": "This film is a perfect conclusion for the trilogy.",
+                          "self": "/api/films/public/2/reviews/5"
+                      }
+                  ],
+                  "next": null
+              }
         "404":
           description: Not Found
         "500":
@@ -400,14 +633,25 @@ paths:
         schema:
           type: integer
           format: int64
+          example : 10
       requestBody:
-        description: the film review with the completed property set to false. Each item in the array is assigned to a single user.
+        description: An array of reviewers . Each item in the array identifies a user to whom 
+          the review for a specific film (identified by the filmId parameter) should be issued.
         content:
           application/json:
             schema:
               type: array
               items:
-                "$ref": "#/components/schemas/Review"
+                type: object
+                properties:
+                  reviewerId:
+                    type: integer
+              example: 
+                [{
+                    "reviewerId":5
+                  },{
+                    "reviewerId":4                 
+                  }] 
         required: true
       responses:
         '201':
@@ -416,6 +660,21 @@ paths:
             application/json:
               schema:
                   "$ref": "#/components/schemas/Reviews"
+              example: 
+                [
+                  {
+                      "filmId": 4,
+                      "reviewerId": 4,
+                      "completed": false,
+                      "self": "/api/films/public/4/reviews/4"
+                  },
+                  {
+                      "filmId": 4,
+                      "reviewerId": 5,
+                      "completed": false,
+                      "self": "/api/films/public/4/reviews/5"
+                  }
+              ]
         '400':
           description: Bad Request
         '401':
@@ -435,7 +694,9 @@ paths:
       - "api/films/public/{filmId}/reviews/{reviewerId}"
       operationId: getSingleReview
       summary: retrieve a specific review of a public film.
-      description: A generic user can retrieve a specific review of a public film.
+      description: A generic user can retrieve a specific completed review of a public film.
+        An authenticated user can retrive an incomplete review if it's assigned to him 
+        or if he is the owner of the film
       parameters:
         - name: filmId
           in: path
@@ -443,12 +704,14 @@ paths:
           schema:
             type: integer
             format: int64
+            example: 2
         - name: reviewerId
           in: path
           required: true
           schema:
             type: integer
             format: int64
+            example: 5
       responses:
         "200":
           description: OK
@@ -456,6 +719,17 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Review"
+              examples:
+                example1:
+                  value:
+                    filmId: 2
+                    reviewerId: 5
+                    completed: true
+                    reviewDate: "2022-03-04"
+                    rating": 10
+                    review: This film is a perfect conclusion for the trilogy.
+                    self: "/api/films/public/2/reviews/5"
+              
         "404":
           description: Not Found
         "500":
@@ -471,25 +745,42 @@ paths:
          The completed property is set to true and the reviewDate, rating and review properties are changed
          according to the values specified by the user that completed the review.
       parameters:
-        - name: filmId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: reviewerId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
+      - name: filmId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+          example: 4
+      - name: reviewerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+          example: 1
+      requestBody:
+        description: The completed review 
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Review"
+            example: 
+              {
+                "filmId": 4,
+                "reviewerId": 1,
+                "completed": true,
+                "reviewDate": "2025-01-04",
+                "rating": 9,
+                "review": "Amazing story!",
+              }
+
+                
+        required: true
+            
       responses:
-        "200":
+        "204":
           description: Succesfully completed
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Review"
         "400":
           description: Bad Request
         "401":
@@ -515,12 +806,14 @@ paths:
           schema:
             type: integer
             format: int64
+            example: 6
         - name: reviewerId
           in: path
           required: true
           schema:
             type: integer
             format: int64
+            example: 1
       responses:
         "204":
           description: Successfully Deleted
@@ -562,10 +855,8 @@ paths:
                       type: integer
         '401':
           description: Unauthorized
-          content: {}
         '500':
           description: Internal Server Error
-          content: {}
   
   "/api/users":
     get:
@@ -583,6 +874,45 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Users"
+              example: 
+                [
+                  {
+                      "id": 1,
+                      "name": "User",
+                      "email": "user.dsp@polito.it",
+                      "self": "/api/users/1"
+                  },
+                  {
+                      "id": 2,
+                      "name": "Frank",
+                      "email": "frank.stein@polito.it",
+                      "self": "/api/users/2"
+                  },
+                  {
+                      "id": 3,
+                      "name": "Karen",
+                      "email": "karen.makise@polito.it",
+                      "self": "/api/users/3"
+                  },
+                  {
+                      "id": 4,
+                      "name": "Rene",
+                      "email": "rene.regeay@polito.it",
+                      "self": "/api/users/4"
+                  },
+                  {
+                      "id": 5,
+                      "name": "Beatrice",
+                      "email": "beatrice.golden@polito.it",
+                      "self": "/api/users/5"
+                  },
+                  {
+                      "id": 6,
+                      "name": "Arthur",
+                      "email": "arthur.pendragon@polito.it",
+                      "self": "/api/users/6"
+                  }
+                  ]
         '401':
           description: Unauthorized
         '404':
@@ -604,6 +934,7 @@ paths:
         schema:
           type: integer
           format: int64
+          example: 1
       responses:
         '200':
           description: OK
@@ -611,6 +942,13 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/User"
+              example: 
+                {
+                    "id": 1,
+                    "name": "User",
+                    "email": "user.dsp@polito.it",
+                    "self": "/api/users/1"
+                }
         '401':
           description: Unauthorized
         '404':
@@ -631,25 +969,45 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/User"
+            example: 
+              {
+                "email":"user.dsp@polito.it",
+                "password":"password"
+            }
         required: true
       responses:
-        '204':
-          description: No Content
+        '200':
+          description: Succesfully Authenticated
           headers:
             Set-Cookie:
               schema:
                 type: string
                 example: token=scal110; Path=/; HttpOnly
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+              example: 
+                {
+                    "id": 1,
+                    "name": "User",
+                    "email": "user.dsp@polito.it",
+                    "self": "/api/users/1"
+                }
         '401':
           description: Unauthorized    
   "/api/films/public/{filmId}/reviews/{reviewerId}/modifications":
     get: 
+      tags:
+        - api/film/public/{filmId}/reviews/{reviewerId}/modifications
       operationId: getSingleFilmReviewModificationRequests
       security:
         - cookieAuth: []
-      summary: retrieve all the review modification request for a specific public film.
+      summary: retrieve all the review modification request related to a specific review.
       description: An authenticated user can retrieve all the review modification requests
-        related to specific film if he is the owner or the reviewer.A pagination machanism is used in order to limit the size of the messages.
+        related to a specific review if he is the owner or the reviewer, ordered for status 
+        (pending ones first) and then for mId. 
+        A pagination machanism is used in order to limit the size of the messages.
       parameters:
         - name: filmId
           in: path
@@ -657,17 +1015,21 @@ paths:
           schema:
             type: integer
             format: int64
+            example: 3
         - name: reviewerId
           in: path
           required: true
           schema:
             type: integer
             format: int64
+            example: 1
         - in: query
           name: pageNo
           required: false
           schema:
             type: integer
+            default: 1
+          description: The number of the requested page. It's optional so if not expessed the first page is returned.
       responses:
         "200":
           description: OK
@@ -675,14 +1037,41 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ReviewModifications"
+              example: 
+                {
+                  "totalPages": 2,
+                  "currentPage": 1,
+                  "mRequests": [
+                      {
+                          "mId": 1,
+                          "filmId": 3,
+                          "reviewerId": 1,
+                          "deadline": "2026-01-15T14:30:00Z",
+                          "status": true,
+                          "self": "/api/films/public/reviews/modifications/1",
+                          "review": "/api/films/public/3/reviews/1"
+                      },
+                      {
+                          "mId": 2,
+                          "filmId": 3,
+                          "reviewerId": 1,
+                          "deadline": "2026-01-15T14:30:00Z",
+                          "status": false,
+                          "self": "/api/films/public/reviews/modifications/2",
+                          "review": "/api/films/public/3/reviews/1"
+                      }
+                  ],
+                  "next": "/api/films/public/3/reviews/1/modifications?pageNo=2"
+                }
         "401":
           description: Unauthorized
         "403":
           description: Forbidden (The user is not owner or the review is not assigned to him)
         "500":
           description: Internal Server Error
-
     post: 
+      tags:
+        - api/film/public/{filmId}/reviews/{reviewerId}/modifications
       summary: Used to create a new review modification request
       description: An authenticated user can request to the owner of the film to modify the review.
       security:
@@ -695,18 +1084,26 @@ paths:
         schema:
           type: integer
           format: int64
+          example: 6
       - name: reviewerId
         in: path
         required: true
         schema:
           type: integer
           format: int64
+          example: 1
       requestBody:
         description: Represents the review modification request that is going to be created
         content:
           application/json:
             schema:
               "$ref": "#/components/schemas/ReviewModification"
+            example: 
+              {
+                "filmId":6,
+                "reviewerId":1,
+                "deadline":"2026-01-15T14:30:00Z"
+            }
         required: true
       responses:
         "201":
@@ -715,6 +1112,15 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ReviewModification"
+              example: 
+                {
+                  "mId": 9,
+                  "filmId": 6,
+                  "reviewerId": 1,
+                  "deadline": "2026-01-15T14:30:00Z",
+                  "self": "/api/films/public/reviews/modifications/9",
+                  "review": "/api/films/public/6/reviews/1"
+                }
         "400":
           description: Bad Request
         "401":
@@ -730,25 +1136,22 @@ paths:
 
   "/api/films/public/reviews/modifications/{mId}":
     get: 
+      tags:
+        - api/film/public/reviews/modifications/{mId}
       operationId: getSingleReviewModificationRequest
       security:
         - cookieAuth: []
-      summary: retrieve a specific review modification request of a public film.
+      summary: retrieve a specific review modification request.
       description: An authenticated user can retrieve a specific review modification request 
         that he sent to the owner of the public film to modify the review.
       parameters:
-        - name: filmId
+        - name: mId
           in: path
           required: true
           schema:
             type: integer
             format: int64
-        - name: reviewerId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
+            example: 1
       responses:
         "200":
           description: OK
@@ -756,6 +1159,61 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ReviewModification"
+              examples :
+                example1:
+                  description: Accepted review modification request
+                  value:
+                    {
+                      "mId": 1,
+                      "filmId": 3,
+                      "reviewerId": 1,
+                      "deadline": "2026-01-15T14:30:00Z",
+                      "status": true,
+                      "self": "/api/films/public/reviews/modifications/1",
+                      "review": "/api/films/public/3/reviews/1"
+                  }
+                example2:
+                  description: The owner of the film retrieves a pending request of a reviewer.
+                  value:
+                    {
+                      "mId": 7,
+                      "filmId": 3,
+                      "reviewerId": 2,
+                      "deadline": "2026-01-15T14:30:00Z",
+                      "status": null,
+                      "self": "/api/films/public/reviews/modifications/7",
+                      "review": "/api/films/public/3/reviews/2",
+                      "accept": "/api/films/public/reviews/modifications/7/accept",
+                      "reject": "/api/films/public/reviews/modifications/7/reject"
+                    }
+                example3:
+                  description: The owner of the film retrieves a pending request that he made to himself
+                  value:
+                    {
+                      "mId": 5,
+                      "filmId": 3,
+                      "reviewerId": 1,
+                      "deadline": "2026-01-15T14:30:00Z",
+                      "status": null,
+                      "self": "/api/films/public/reviews/modifications/5",
+                      "review": "/api/films/public/3/reviews/1",
+                      "accept": "/api/films/public/reviews/modifications/5/accept",
+                      "reject": "/api/films/public/reviews/modifications/5/reject",
+                      "delete": "/api/films/public/reviews/modifications/5"
+                  }
+                example4:
+                  description: The reviewer of the film retrieves a pending request.
+                  value:
+                    {
+                        "mId": 9,
+                        "filmId": 6,
+                        "reviewerId": 1,
+                        "deadline": "2026-01-15T14:30:00Z",
+                        "status": null,
+                        "self": "/api/films/public/reviews/modifications/9",
+                        "review": "/api/films/public/6/reviews/1",
+                        "delete": "/api/films/public/reviews/modifications/9"
+                    }
         "401":
           description: Unauthorized
         "403":
@@ -766,6 +1224,8 @@ paths:
           description: Internal Server Error
 
     delete:
+      tags:
+        - api/film/public/reviews/modifications/{mId}
       security:
         - cookieAuth: []
       operationId: deleteSingleReviewModificationRequest
@@ -779,7 +1239,7 @@ paths:
           schema:
             type: integer
             format: int64
-
+            example : 9
       responses:
         "204":
           description: Successfully Deleted
@@ -796,8 +1256,10 @@ paths:
 
   "/api/films/public/reviews/modifications/{mId}/accept":
     put: 
-      summary: Used to accept review modification request
-      description: The owner of the film can accept a review modification request
+      tags:
+        - api/film/public/reviews/modifications/{mId}/accept
+      summary: Used to accept a review modification request
+      description: The owner of the film can accept a pending review modification request
       security:
         - cookieAuth: []
       operationId: acceptReviewModificationRequest
@@ -808,6 +1270,7 @@ paths:
         schema:
           type: integer
           format: int64
+          example: 3
       responses:
         "204":
           description: Succesfully accepted
@@ -821,8 +1284,10 @@ paths:
           description: Internal Server Error    
   "/api/films/public/reviews/modifications/{mId}/reject":
     put: 
+      tags:
+        - api/film/public/reviews/modifications/{mId}/reject
       summary: Used to reject review modification request
-      description: The owner of the film can reject a review modification request or the deadline is exceded
+      description: The owner of the film can reject a pending review modification request or the deadline is exceded
       security:
         - cookieAuth: []
       operationId: rejectReviewModificationRequest
@@ -833,6 +1298,7 @@ paths:
         schema:
           type: integer
           format: int64
+          example: 7
       responses:
         "204":
           description: Succesfully rejected
@@ -846,6 +1312,8 @@ paths:
           description: Internal Server Error
   "/api/films/public/reviews/modifications/status" :
     get: 
+      tags:
+        - api/films/public/reviews/modifications/status
       operationId: getReviewModificationRequestsStatus
       security:
         - cookieAuth: []
@@ -859,6 +1327,8 @@ paths:
           required: false
           schema:
             type: integer
+            default: 1
+          description: The number of the requested page. It's optional so if not expessed the first page is returned.
       responses:
         "200":
           description: OK
@@ -866,12 +1336,42 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ReviewModifications"
+              example: 
+                {
+                  "totalPages": 1,
+                  "currentPage": 1,
+                  "mRequests": [
+                      {
+                          "mId": 7,
+                          "filmId": 3,
+                          "reviewerId": 2,
+                          "deadline": "2026-01-15T14:30:00Z",
+                          "status": null,
+                          "self": "/api/films/public/reviews/modifications/7",
+                          "review": "/api/films/public/3/reviews/2",
+                          "delete": "/api/films/public/reviews/modifications/7"
+                      },
+                      {
+                          "mId": 8,
+                          "filmId": 3,
+                          "reviewerId": 2,
+                          "deadline": "2025-01-16T14:30:00Z",
+                          "status": true,
+                          "self": "/api/films/public/reviews/modifications/8",
+                          "review": "/api/films/public/3/reviews/2"
+                      }
+                  ],
+                  "next": null
+              }
+
         "401":
           description: Unauthorized
         "500":
           description: Internal Server Error
   "/api/films/public/reviews/modifications/received" :
     get: 
+      tags:
+        - api/films/public/reviews/modifications/received
       operationId: getReviewModificationRequestsReceived
       security:
         - cookieAuth: []
@@ -885,6 +1385,8 @@ paths:
           required: false
           schema:
             type: integer
+            default: 1
+          description: The number of the requested page. It's optional so if not expessed the first page is returned.
       responses:
         "200":
           description: OK
@@ -892,6 +1394,37 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ReviewModifications"
+              example: 
+                {
+                  "totalPages": 4,
+                  "currentPage": 1,
+                  "mRequests": [
+                      {
+                          "mId": 5,
+                          "filmId": 3,
+                          "reviewerId": 1,
+                          "deadline": "2026-01-15T14:30:00Z",
+                          "status": null,
+                          "self": "/api/films/public/reviews/modifications/5",
+                          "review": "/api/films/public/3/reviews/1",
+                          "accept": "/api/films/public/reviews/modifications/5/accept",
+                          "reject": "/api/films/public/reviews/modifications/5/reject",
+                          "delete": "/api/films/public/reviews/modifications/5"
+                      },
+                      {
+                          "mId": 7,
+                          "filmId": 3,
+                          "reviewerId": 2,
+                          "deadline": "2026-01-15T14:30:00Z",
+                          "status": null,
+                          "self": "/api/films/public/reviews/modifications/7",
+                          "review": "/api/films/public/3/reviews/2",
+                          "accept": "/api/films/public/reviews/modifications/7/accept",
+                          "reject": "/api/films/public/reviews/modifications/7/reject"
+                      }
+                  ],
+                  "next": "/api/films/public/reviews/modifications/received?pageNo=2"
+              }
         "401":
           description: Unauthorized
         "500":
@@ -1027,11 +1560,11 @@ components:
           description: The path to the schema used to validate the films data structure
         totalPages:
           type: integer
-          minimum: 0
+          minimum: 1
           description: the total number of pages
         currentPage:
           type: integer
-          minimum: 0
+          minimum: 1
           description: the number of the currentPage
         films:
           type: array
@@ -1060,7 +1593,7 @@ components:
           description: the unique identifier of the user who has received the review invitation
         completed:
           type: boolean
-          default: true
+          default: false
           description: It's true if the review has benn completed, false otherwise
         reviewDate:
           type: string
@@ -1075,10 +1608,18 @@ components:
           type: string
           maxLength: 1000
           description: a textual description of the review
+        film: 
+          type: string
+          format: uri
+          description: URI to access the film related to the review
+        delete: 
+          type: string
+          format: uri
+          description: URI to delete the modification request(if not completed).
         self:
           type: string
           format: uri
-          description: URI to access the specific review  resource
+          description: URI to access the specific review resource
       required:
         - filmId
         - reviewerId
@@ -1092,11 +1633,11 @@ components:
           description: path to the schema used to validate the reviews data structure
         totalPages:
           type: integer
-          minimum: 0
+          minimum: 1
           description: the total number of pages
         currentPage:
           type: integer
-          minimum: 0
+          minimum: 1
           description: the number of the currentPage
         reviews:
           type: array
@@ -1132,6 +1673,7 @@ components:
           description: The deadline by wich an answer is expected
         status:
           type: boolean
+          nullable: true
           default: null
           description: Its true if the request is accepted, false if if the request is refused or null if the request is pending
         review:
@@ -1146,6 +1688,10 @@ components:
           type: string
           format: uri
           description: URI to reject the modification request.
+        delete: 
+          type: string
+          format: uri
+          description: URI to delete the modification request(if in a pending status).
         self:
           type: string
           format: uri
@@ -1164,11 +1710,11 @@ components:
           description: path to the schema used to validate the reviews data structure
         totalPages:
           type: integer
-          minimum: 0
+          minimum: 1
           description: the total number of pages
         currentPage:
           type: integer
-          minimum: 0
+          minimum: 1
           description: the number of the currentPage
         reviews:
           type: array

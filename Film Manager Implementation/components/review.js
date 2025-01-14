@@ -1,5 +1,5 @@
 class Review{
-    constructor(filmId,reviewerId,completed,reviewDate,rating,review,showModificationRequests){
+    constructor(filmId,reviewerId,completed,reviewDate,rating,review,showModificationRequests,isReviewer){
         this.filmId=filmId;
         this.reviewerId=reviewerId;
         this.completed=completed;
@@ -14,6 +14,10 @@ class Review{
         if(showModificationRequests){
         this.modificationReq="/api/films/public/" + this.filmId + "/reviews/"+ this.reviewerId+"/modifications" ;
         }
+        if(isReviewer && !completed){
+            this.delete="/api/films/public/" + this.filmId + "/reviews/" + this.reviewerId                        
+        }
+        this.film="/api/films/public/" + this.filmId
 
         this.self= "/api/films/public/" + this.filmId + "/reviews/" + this.reviewerId
     }

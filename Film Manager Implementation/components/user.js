@@ -7,7 +7,7 @@ class User{
         if(hash)
             this.hash=hash
         
-        this.self= "/api/users" + this.id;
+        this.self= "/api/users/" + this.id;
 
     
     }
