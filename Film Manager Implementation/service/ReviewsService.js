@@ -56,14 +56,7 @@ exports.getSingleReview = function (req) {
             else if (!row) {
                 reject(404);
             }
-            else if(!row.completed){
-                if(req.user && req.user.id!== row.owner && req.user.id !==row.reviewerId){
-                    reject(404);
-                }
-                else{
-                    resolve(parseReview(row,req.user));
-                }
-            }
+            
             else {
                 resolve(parseReview(row,req.user));
             }
