@@ -34,8 +34,6 @@
         }
     },
     "required": [
-        "filmId",
-        "reviewerId",
         "deadline"
     ]
    

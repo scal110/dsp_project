@@ -1091,15 +1091,14 @@ paths:
           format: int64
           example: 1
       requestBody:
-        description: Represents the review modification request that is going to be created
+        description:  Represents the review modification request to be created. 
+          The request body includes only the deadline, as the filmId and reviewerId are specified as path parameters.
         content:
           application/json:
             schema:
               "$ref": "#/components/schemas/ReviewModification"
             example: 
               {
-                "filmId":6,
-                "reviewerId":1,
                 "deadline":"2026-01-15T14:30:00Z"
             }
         required: true
@@ -1695,8 +1694,6 @@ components:
           format: uri
           description: URI to access the specific review modification request.
       required:
-        - filmId
-        - reviewerId
         - deadline
     ReviewModifications:
       type: object

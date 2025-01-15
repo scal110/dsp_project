@@ -1,0 +1,6511 @@
+{
+	"info": {
+		"_postman_id": "dc116049-d0d1-4cac-9bcd-7d26b3e6d9a1",
+		"name": "Film Manager",
+		"description": "REST APIs that alllows to interact with the Film Manager Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "27019743"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "Retrieve the Film Manager",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": "{{baseUrl}}/api",
+						"description": "Represents the entry point of the REST interface. No authentication required."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": "{{baseUrl}}/api"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"films\": \"http://XOZxtRW.wvshhSWk38FYV6CV3.RrDL3BEZiJePMd.aAAHjMyqCbh0U.fqiskJAxxmxtVznuj\",\n  \"privateFilms\": \"http://gqWDSXXhlmnoJDWMtghLcxJCVRooazQsp.aimrvPL1Oj6SUhtUMYPvMAY-cGlAHm9UPovggN01MZ0AZ8UIXpbhe2fgEM6R\",\n  \"publicFilms\": \"http://QEqVClQjOtIVZ.svbyAQG3G6fuY-X\",\n  \"invitedPublicFilms\": \"http://uyOcbCpcqIjQTZExyxzYuPrTnu.vqAwpz-gb5Xl\",\n  \"reviewAssignments\": \"http://DjaBlcmqdqDK.flkW.wvU-9PFHKPNEM8.pasbHi+lZt9UKqDOvgaZDztmNjJFSan\",\n  \"users\": \"https://xlpDduTFJW.ziZRaeNrFBsvQ-pEeHcbX1cTyD.veDGon.sd.,GV,JlWa\",\n  \"usersAuthenticator\": \"https://pqPT.bnmkDDyD5OXrkKsjMT,xJWWN\"\n}"
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "{{baseUrl}}/api"
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "The entry point of the Film Manager Rest interface"
+		},
+		{
+			"name": "api/users/authenticator",
+			"item": [
+				{
+					"name": "Logs a user in",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user.dsp@polito.it\",\n  \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/users/authenticator",
+						"description": "The user who wants to log in sends the user data to the authenticator which performs the operation. If the request for the login of a new user comes from an already authenticated user, the previous user is first logged out."
+					},
+					"response": [
+						{
+							"name": "Succesfully Authenticated",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"user.dsp@polito.it\",\n  \"password\": \"password\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/users/authenticator"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "token=scal110; Path=/; HttpOnly",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 1,\n  \"name\": \"User\",\n  \"email\": \"user.dsp@polito.it\",\n  \"self\": \"/api/users/1\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"user.dsp@polito.it\",\n  \"password\": \"password\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/users/authenticator"
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "the authenticator"
+		},
+		{
+			"name": "api/users",
+			"item": [
+				{
+					"name": "Get informations about users",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": "{{baseUrl}}/api/users",
+						"description": "An authenticated user can retrieve informations about all the other users (Password excluded)"
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": "{{baseUrl}}/api/users"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": 1,\n    \"name\": \"User\",\n    \"email\": \"user.dsp@polito.it\",\n    \"self\": \"/api/users/1\"\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Frank\",\n    \"email\": \"frank.stein@polito.it\",\n    \"self\": \"/api/users/2\"\n  },\n  {\n    \"id\": 3,\n    \"name\": \"Karen\",\n    \"email\": \"karen.makise@polito.it\",\n    \"self\": \"/api/users/3\"\n  },\n  {\n    \"id\": 4,\n    \"name\": \"Rene\",\n    \"email\": \"rene.regeay@polito.it\",\n    \"self\": \"/api/users/4\"\n  },\n  {\n    \"id\": 5,\n    \"name\": \"Beatrice\",\n    \"email\": \"beatrice.golden@polito.it\",\n    \"self\": \"/api/users/5\"\n  },\n  {\n    \"id\": 6,\n    \"name\": \"Arthur\",\n    \"email\": \"arthur.pendragon@polito.it\",\n    \"self\": \"/api/users/6\"\n  }\n]"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": "{{baseUrl}}/api/users"
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": "{{baseUrl}}/api/users"
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "The set of all the users"
+		},
+		{
+			"name": "api/users/{userId}",
+			"item": [
+				{
+					"name": "Get informations about a specific user",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/:userId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "(Required) unique identifier of the user to get"
+								}
+							]
+						},
+						"description": "An authenticated user can retrieve informations about a user idetified by userId (Password excluded)"
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/users/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"users",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "userId"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 1,\n  \"name\": \"User\",\n  \"email\": \"user.dsp@polito.it\",\n  \"self\": \"/api/users/1\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/users/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"users",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "userId"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/users/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"users",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "userId"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "The user idetified by userId"
+		},
+		{
+			"name": "api/films",
+			"item": [
+				{
+					"name": "Used to add a new film to the owner list",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Inside Out 2\",\n  \"owner\": 1,\n  \"private\": false\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/films",
+						"description": "An authenticated user can create a film that is added to it's own list"
+					},
+					"response": [
+						{
+							"name": "example1",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inside Out 2\",\n  \"owner\": 1,\n  \"private\": false\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/films"
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 10,\n  \"title\": \"Inside Out 2\",\n  \"owner\": 1,\n  \"private\": false,\n  \"reviews\": \"/api/films/public/10/reviews\",\n  \"self\": \"/api/films/public/10\"\n}"
+						},
+						{
+							"name": "example2",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inception\",\n  \"owner\": 1,\n  \"private\": true,\n  \"watchDate\": \"2024-11-27\",\n  \"rating\": 9,\n  \"favorite\": false\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/films"
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 11,\n  \"title\": \"Inception,\",\n  \"owner\": 1,\n  \"private\": true,\n  \"watchDate\": \"2024-11-27\",\n  \"rating\": 9,\n  \"favorite\": false,\n  \"self\": \"/api/films/public/11\"\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inside Out 2\",\n  \"owner\": 1,\n  \"private\": false\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/films"
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inside Out 2\",\n  \"owner\": 1,\n  \"private\": false\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/films"
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inside Out 2\",\n  \"owner\": 1,\n  \"private\": false\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/films"
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Retrive all the films created by the authenticated user.",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/films?pageNo=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "1",
+									"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+								}
+							]
+						},
+						"description": "An authenticated user can retrieve all the films that he created.  A pagination machanism is used in order to limit the size of the messages."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"totalPages\": 3,\n  \"currentPage\": 1,\n  \"films\": [\n    {\n      \"id\": 10,\n      \"title\": \"Inside Out 2\",\n      \"owner\": 1,\n      \"private\": true,\n      \"watchDate\": \"2024-11-27\",\n      \"rating\": 9,\n      \"favorite\": false,\n      \"self\": \"/api/films/public/10\"\n    },\n    {\n      \"id\": 11,\n      \"title\": \"Inception\",\n      \"owner\": 1,\n      \"private\": false,\n      \"reviews\": \"/api/films/public/11/reviews\",\n      \"self\": \"/api/films/public/11\"\n    }\n  ],\n  \"next\": \"/api/films?pageNo=2\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "The set of all the films"
+		},
+		{
+			"name": "api/films/private",
+			"item": [
+				{
+					"name": "retrieve the private films of the user.",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/films/private?pageNo=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"private"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "1",
+									"description": "The number of the requeted page. It's optional so if not expessed the first page is returned."
+								}
+							]
+						},
+						"description": "A logged-in user can retrieve his private films. A pagination machanism is used in order to limit the size of the messages."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requeted page. It's optional so if not expessed the first page is returned."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"totalPages\": 1,\n  \"currentPage\": 1,\n  \"films\": [\n    {\n      \"id\": 1,\n      \"title\": \"Your Name\",\n      \"owner\": 1,\n      \"private\": true,\n      \"watchDate\": \"2021-10-03\",\n      \"rating\": 9,\n      \"self\": \"/api/films/private/1\"\n    },\n    {\n      \"id\": 4,\n      \"title\": \"Weathering with You\",\n      \"owner\": 1,\n      \"private\": true,\n      \"self\": \"/api/films/private/4\"\n    }\n  ],\n  \"next\": null\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requeted page. It's optional so if not expessed the first page is returned."
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requeted page. It's optional so if not expessed the first page is returned."
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "The set of all the private films"
+		},
+		{
+			"name": "api/films/private/{filmId}",
+			"item": [
+				{
+					"name": "retrieve a specific private film of the user.",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/films/private/:filmId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"private",
+								":filmId"
+							],
+							"variable": [
+								{
+									"key": "filmId",
+									"value": "10",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "A logged-in user can retrieve a specific private film that he owns."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 10,\n  \"title\": \"Inside Out 2\",\n  \"owner\": 1,\n  \"private\": true,\n  \"watchDate\": \"2024-11-27\",\n  \"rating\": 9,\n  \"favorite\": false,\n  \"self\": \"/api/films/public/10\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Update a specific private film of the user.",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Inside Out 2\",\n  \"owner\": 1,\n  \"private\": true,\n  \"watchDate\": \"2024-11-27\",\n  \"rating\": 10,\n  \"favorite\": true\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/films/private/:filmId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"private",
+								":filmId"
+							],
+							"variable": [
+								{
+									"key": "filmId",
+									"value": "10",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "A logged-in user can update a specific private film that he owns except for it's visibility."
+					},
+					"response": [
+						{
+							"name": "Succesfully Updated",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inside Out 2\",\n  \"owner\": 1,\n  \"private\": true,\n  \"watchDate\": \"2024-11-27\",\n  \"rating\": 10,\n  \"favorite\": true\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inside Out 2\",\n  \"owner\": 1,\n  \"private\": true,\n  \"watchDate\": \"2024-11-27\",\n  \"rating\": 10,\n  \"favorite\": true\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inside Out 2\",\n  \"owner\": 1,\n  \"private\": true,\n  \"watchDate\": \"2024-11-27\",\n  \"rating\": 10,\n  \"favorite\": true\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inside Out 2\",\n  \"owner\": 1,\n  \"private\": true,\n  \"watchDate\": \"2024-11-27\",\n  \"rating\": 10,\n  \"favorite\": true\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inside Out 2\",\n  \"owner\": 1,\n  \"private\": true,\n  \"watchDate\": \"2024-11-27\",\n  \"rating\": 10,\n  \"favorite\": true\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict (The request is not allowed, like a change of visibility)",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inside Out 2\",\n  \"owner\": 1,\n  \"private\": true,\n  \"watchDate\": \"2024-11-27\",\n  \"rating\": 10,\n  \"favorite\": true\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inside Out 2\",\n  \"owner\": 1,\n  \"private\": true,\n  \"watchDate\": \"2024-11-27\",\n  \"rating\": 10,\n  \"favorite\": true\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Delete a specific private film of the user.",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/films/private/:filmId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"private",
+								":filmId"
+							],
+							"variable": [
+								{
+									"key": "filmId",
+									"value": "10",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "A logged-in user can delete a specific private film that he owns."
+					},
+					"response": [
+						{
+							"name": "Successfully Deleted",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/private/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"private",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "The private film identified by filmId"
+		},
+		{
+			"name": "api/films/public",
+			"item": [
+				{
+					"name": "retrieve a list of public films.",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public?pageNo=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "1",
+									"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+								}
+							]
+						},
+						"description": "A generic user can retrieve a list of public films added by other users. A pagination machanism is used in order to limit the size of the messages."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"totalPages\": 3,\n  \"currentPage\": 1,\n  \"films\": [\n    {\n      \"id\": 2,\n      \"title\": \"Heaven's Feel\",\n      \"owner\": 2,\n      \"private\": false,\n      \"reviews\": \"/api/films/public/2/reviews\",\n      \"self\": \"/api/films/public/2\"\n    },\n    {\n      \"id\": 3,\n      \"title\": \"You Can (Not) Redo\",\n      \"owner\": 1,\n      \"private\": false,\n      \"reviews\": \"/api/films/public/3/reviews\",\n      \"self\": \"/api/films/public/3\"\n    }\n  ],\n  \"next\": \"/api/films/public?pageNo=2\"\n}"
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "The set of all public films"
+		},
+		{
+			"name": "api/films/public/{filmId}",
+			"item": [
+				{
+					"name": "retrieve a specific public film.",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public/:filmId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public",
+								":filmId"
+							],
+							"variable": [
+								{
+									"key": "filmId",
+									"value": "11",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "A generic user can retrieve a specific public film."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 11,\n  \"title\": \"Inception\",\n  \"owner\": 1,\n  \"private\": false,\n  \"reviews\": \"/api/films/public/11/reviews\",\n  \"self\": \"/api/films/public/11\"\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Update a specific public film of the user.",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Inception Remake\",\n  \"owner\": 1,\n  \"private\": false\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public/:filmId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public",
+								":filmId"
+							],
+							"variable": [
+								{
+									"key": "filmId",
+									"value": "11",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "A logged-in user can update a specific public film that he owns except for it's visibility."
+					},
+					"response": [
+						{
+							"name": "Succesfully Updated",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inception Remake\",\n  \"owner\": 1,\n  \"private\": false\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inception Remake\",\n  \"owner\": 1,\n  \"private\": false\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inception Remake\",\n  \"owner\": 1,\n  \"private\": false\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inception Remake\",\n  \"owner\": 1,\n  \"private\": false\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inception Remake\",\n  \"owner\": 1,\n  \"private\": false\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict (The request is not allowed, like a change of visibility)",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inception Remake\",\n  \"owner\": 1,\n  \"private\": false\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Inception Remake\",\n  \"owner\": 1,\n  \"private\": false\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Delete a specific public film of the user.",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public/:filmId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public",
+								":filmId"
+							],
+							"variable": [
+								{
+									"key": "filmId",
+									"value": "11",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "A logged-in user can delete a specific public film that he owns."
+					},
+					"response": [
+						{
+							"name": "Successfully Deleted",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "The public film identified by filmId"
+		},
+		{
+			"name": "api/films/public/{filmId}/reviews",
+			"item": [
+				{
+					"name": "retrieve the reviews of a specific public film.",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public/:filmId/reviews?pageNo=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public",
+								":filmId",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "1",
+									"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+								}
+							],
+							"variable": [
+								{
+									"key": "filmId",
+									"value": "2",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "A generic user can retrieve all the reviews of a specific public film. A pagination machanism is used in order to limit the size of the messages."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"totalPages\": 1,\n  \"currentPage\": 1,\n  \"reviews\": [\n    {\n      \"filmId\": 2,\n      \"reviewerId\": 2,\n      \"completed\": true,\n      \"reviewDate\": \"2022-04-04\",\n      \"rating\": 10,\n      \"review\": \"I could not stop watching until the very end. However, you must watch the prequels before this film to really understand it.\",\n      \"self\": \"/api/films/public/2/reviews/2\"\n    },\n    {\n      \"filmId\": 2,\n      \"reviewerId\": 5,\n      \"completed\": true,\n      \"reviewDate\": \"2022-03-04\",\n      \"rating\": 10,\n      \"review\": \"This film is a perfect conclusion for the trilogy.\",\n      \"self\": \"/api/films/public/2/reviews/5\"\n    }\n  ],\n  \"next\": null\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Issue film review to some users",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"reviewerId\": 5\n  },\n  {\n    \"reviewerId\": 4\n  }\n]",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public/:filmId/reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public",
+								":filmId",
+								"reviews"
+							],
+							"variable": [
+								{
+									"key": "filmId",
+									"value": "10",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "The owner of the public film, identified by filmId, assign it to one or more users and the relative reviews are created with the completed property set to false."
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n  {\n    \"reviewerId\": 5\n  },\n  {\n    \"reviewerId\": 4\n  }\n]",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"filmId\": 4,\n    \"reviewerId\": 4,\n    \"completed\": false,\n    \"self\": \"/api/films/public/4/reviews/4\"\n  },\n  {\n    \"filmId\": 4,\n    \"reviewerId\": 5,\n    \"completed\": false,\n    \"self\": \"/api/films/public/4/reviews/5\"\n  }\n]"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n  {\n    \"reviewerId\": 5\n  },\n  {\n    \"reviewerId\": 4\n  }\n]",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n  {\n    \"reviewerId\": 5\n  },\n  {\n    \"reviewerId\": 4\n  }\n]",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Forbidden (user is not the owner)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n  {\n    \"reviewerId\": 5\n  },\n  {\n    \"reviewerId\": 4\n  }\n]",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n  {\n    \"reviewerId\": 5\n  },\n  {\n    \"reviewerId\": 4\n  }\n]",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict (e.g., wrong film id or unknown reviewer id)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n  {\n    \"reviewerId\": 5\n  },\n  {\n    \"reviewerId\": 4\n  }\n]",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n  {\n    \"reviewerId\": 5\n  },\n  {\n    \"reviewerId\": 4\n  }\n]",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "The set of all review invitations for a single public film identified by filmId"
+		},
+		{
+			"name": "api/films/public/{filmId}/reviews/{reviewerId}",
+			"item": [
+				{
+					"name": "retrieve a specific review of a public film.",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public",
+								":filmId",
+								"reviews",
+								":reviewerId"
+							],
+							"variable": [
+								{
+									"key": "filmId",
+									"value": "2",
+									"description": "(Required) "
+								},
+								{
+									"key": "reviewerId",
+									"value": "5",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "A generic user can retrieve a specific review of a public film."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"filmId\": 2,\n  \"reviewerId\": 5,\n  \"completed\": true,\n  \"reviewDate\": \"2022-03-04\",\n  \"rating\\\"\": 10,\n  \"review\": \"This film is a perfect conclusion for the trilogy.\",\n  \"self\": \"/api/films/public/2/reviews/5\"\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Complete a review",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"filmId\": 4,\n  \"reviewerId\": 1,\n  \"completed\": true,\n  \"reviewDate\": \"2025-01-04\",\n  \"rating\": 9,\n  \"review\": \"Amazing story!\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public",
+								":filmId",
+								"reviews",
+								":reviewerId"
+							],
+							"variable": [
+								{
+									"key": "filmId",
+									"value": "4",
+									"description": "(Required) "
+								},
+								{
+									"key": "reviewerId",
+									"value": "1",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "This operation allows to set the review, identified by the pair filmId, reviewerId, as completed. The completed property is set to true and the reviewDate, rating and review properties are changed according to the values specified by the user that completed the review."
+					},
+					"response": [
+						{
+							"name": "Succesfully completed",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filmId\": 4,\n  \"reviewerId\": 1,\n  \"completed\": true,\n  \"reviewDate\": \"2025-01-04\",\n  \"rating\": 9,\n  \"review\": \"Amazing story!\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filmId\": 4,\n  \"reviewerId\": 1,\n  \"completed\": true,\n  \"reviewDate\": \"2025-01-04\",\n  \"rating\": 9,\n  \"review\": \"Amazing story!\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filmId\": 4,\n  \"reviewerId\": 1,\n  \"completed\": true,\n  \"reviewDate\": \"2025-01-04\",\n  \"rating\": 9,\n  \"review\": \"Amazing story!\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filmId\": 4,\n  \"reviewerId\": 1,\n  \"completed\": true,\n  \"reviewDate\": \"2025-01-04\",\n  \"rating\": 9,\n  \"review\": \"Amazing story!\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filmId\": 4,\n  \"reviewerId\": 1,\n  \"completed\": true,\n  \"reviewDate\": \"2025-01-04\",\n  \"rating\": 9,\n  \"review\": \"Amazing story!\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filmId\": 4,\n  \"reviewerId\": 1,\n  \"completed\": true,\n  \"reviewDate\": \"2025-01-04\",\n  \"rating\": 9,\n  \"review\": \"Amazing story!\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Delete a review invitation",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public",
+								":filmId",
+								"reviews",
+								":reviewerId"
+							],
+							"variable": [
+								{
+									"key": "filmId",
+									"value": "6",
+									"description": "(Required) "
+								},
+								{
+									"key": "reviewerId",
+									"value": "1",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "This operation can be performed only by the film's owner on a review that is not yet completed."
+					},
+					"response": [
+						{
+							"name": "Successfully Deleted",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict (e.g. the review is already completed)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "The review invitation for a single public film identified by filmId issued to the user identified by reviewerId"
+		},
+		{
+			"name": "api/films/public/invited",
+			"item": [
+				{
+					"name": "Retrieve the public films that the logged-user has been invited to review",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public/invited?pageNo=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public",
+								"invited"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "1",
+									"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+								}
+							]
+						},
+						"description": "The logged-in user can retrieve all the public films he was invited to review. A pagination machanism is used in order to limit the size of the messages."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/invited?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"invited"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"totalPages\": 2,\n  \"currentPage\": 1,\n  \"films\": [\n    {\n      \"id\": 3,\n      \"title\": \"You Can (Not) Redo\",\n      \"owner\": 1,\n      \"private\": false,\n      \"reviews\": \"/api/films/public/3/reviews\",\n      \"self\": \"/api/films/public/3\"\n    },\n    {\n      \"id\": 4,\n      \"title\": \"Weathering with You\",\n      \"owner\": 1,\n      \"private\": false,\n      \"reviews\": \"/api/films/public/4/reviews\",\n      \"self\": \"/api/films/public/4\"\n    }\n  ],\n  \"next\": \"/api/films/public/invited?pageNo=2\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/invited?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"invited"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/invited?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"invited"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "The set of public films for which a review inviatation has been issued"
+		},
+		{
+			"name": "api/film/public/{filmId}/reviews/{reviewerId}/modifications",
+			"item": [
+				{
+					"name": "retrieve all the review modification request related to a specific review.",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId/modifications?pageNo=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public",
+								":filmId",
+								"reviews",
+								":reviewerId",
+								"modifications"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "1",
+									"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+								}
+							],
+							"variable": [
+								{
+									"key": "filmId",
+									"value": "3",
+									"description": "(Required) "
+								},
+								{
+									"key": "reviewerId",
+									"value": "1",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "An authenticated user can retrieve all the review modification requests related to a specific review if he is the owner or the reviewer, ordered for status (pending ones first) and then for mId. A pagination machanism is used in order to limit the size of the messages."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId/modifications?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId",
+										"modifications"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"totalPages\": 2,\n  \"currentPage\": 1,\n  \"mRequests\": [\n    {\n      \"mId\": 1,\n      \"filmId\": 3,\n      \"reviewerId\": 1,\n      \"deadline\": \"2026-01-15T14:30:00Z\",\n      \"status\": true,\n      \"self\": \"/api/films/public/reviews/modifications/1\",\n      \"review\": \"/api/films/public/3/reviews/1\"\n    },\n    {\n      \"mId\": 2,\n      \"filmId\": 3,\n      \"reviewerId\": 1,\n      \"deadline\": \"2026-01-15T14:30:00Z\",\n      \"status\": false,\n      \"self\": \"/api/films/public/reviews/modifications/2\",\n      \"review\": \"/api/films/public/3/reviews/1\"\n    }\n  ],\n  \"next\": \"/api/films/public/3/reviews/1/modifications?pageNo=2\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId/modifications?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId",
+										"modifications"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Forbidden (The user is not owner or the review is not assigned to him)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId/modifications?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId",
+										"modifications"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId/modifications?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId",
+										"modifications"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Used to create a new review modification request",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"filmId\": 6,\n  \"reviewerId\": 1,\n  \"deadline\": \"2026-01-15T14:30:00Z\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId/modifications",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public",
+								":filmId",
+								"reviews",
+								":reviewerId",
+								"modifications"
+							],
+							"variable": [
+								{
+									"key": "filmId",
+									"value": "6",
+									"description": "(Required) "
+								},
+								{
+									"key": "reviewerId",
+									"value": "1",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "An authenticated user can request to the owner of the film to modify the review."
+					},
+					"response": [
+						{
+							"name": "created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filmId\": 6,\n  \"reviewerId\": 1,\n  \"deadline\": \"2026-01-15T14:30:00Z\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId/modifications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId",
+										"modifications"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"mId\": 9,\n  \"filmId\": 6,\n  \"reviewerId\": 1,\n  \"deadline\": \"2026-01-15T14:30:00Z\",\n  \"self\": \"/api/films/public/reviews/modifications/9\",\n  \"review\": \"/api/films/public/6/reviews/1\"\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filmId\": 6,\n  \"reviewerId\": 1,\n  \"deadline\": \"2026-01-15T14:30:00Z\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId/modifications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId",
+										"modifications"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filmId\": 6,\n  \"reviewerId\": 1,\n  \"deadline\": \"2026-01-15T14:30:00Z\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId/modifications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId",
+										"modifications"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filmId\": 6,\n  \"reviewerId\": 1,\n  \"deadline\": \"2026-01-15T14:30:00Z\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId/modifications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId",
+										"modifications"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict (Invalid film or reviewerId)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filmId\": 6,\n  \"reviewerId\": 1,\n  \"deadline\": \"2026-01-15T14:30:00Z\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId/modifications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId",
+										"modifications"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"filmId\": 6,\n  \"reviewerId\": 1,\n  \"deadline\": \"2026-01-15T14:30:00Z\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/:filmId/reviews/:reviewerId/modifications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										":filmId",
+										"reviews",
+										":reviewerId",
+										"modifications"
+									],
+									"variable": [
+										{
+											"key": "filmId"
+										},
+										{
+											"key": "reviewerId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "The modifications related to a specific review"
+		},
+		{
+			"name": "api/film/public/reviews/modifications/{mId}",
+			"item": [
+				{
+					"name": "retrieve a specific review modification request.",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public",
+								"reviews",
+								"modifications",
+								":mId"
+							],
+							"variable": [
+								{
+									"key": "mId",
+									"value": "1",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "An authenticated user can retrieve a specific review modification request that he sent to the owner of the public film to modify the review."
+					},
+					"response": [
+						{
+							"name": "example1",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"mId\": 1,\n  \"filmId\": 3,\n  \"reviewerId\": 1,\n  \"deadline\": \"2026-01-15T14:30:00Z\",\n  \"status\": true,\n  \"self\": \"/api/films/public/reviews/modifications/1\",\n  \"review\": \"/api/films/public/3/reviews/1\"\n}"
+						},
+						{
+							"name": "example2",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"mId\": 7,\n  \"filmId\": 3,\n  \"reviewerId\": 2,\n  \"deadline\": \"2026-01-15T14:30:00Z\",\n  \"status\": null,\n  \"self\": \"/api/films/public/reviews/modifications/7\",\n  \"review\": \"/api/films/public/3/reviews/2\",\n  \"accept\": \"/api/films/public/reviews/modifications/7/accept\",\n  \"reject\": \"/api/films/public/reviews/modifications/7/reject\"\n}"
+						},
+						{
+							"name": "example3",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"mId\": 5,\n  \"filmId\": 3,\n  \"reviewerId\": 1,\n  \"deadline\": \"2026-01-15T14:30:00Z\",\n  \"status\": null,\n  \"self\": \"/api/films/public/reviews/modifications/5\",\n  \"review\": \"/api/films/public/3/reviews/1\",\n  \"accept\": \"/api/films/public/reviews/modifications/5/accept\",\n  \"reject\": \"/api/films/public/reviews/modifications/5/reject\",\n  \"delete\": \"/api/films/public/reviews/modifications/5\"\n}"
+						},
+						{
+							"name": "example4",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"mId\": 9,\n  \"filmId\": 6,\n  \"reviewerId\": 1,\n  \"deadline\": \"2026-01-15T14:30:00Z\",\n  \"status\": null,\n  \"self\": \"/api/films/public/reviews/modifications/9\",\n  \"review\": \"/api/films/public/6/reviews/1\",\n  \"delete\": \"/api/films/public/reviews/modifications/9\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Delete a specific review modification request.",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public",
+								"reviews",
+								"modifications",
+								":mId"
+							],
+							"variable": [
+								{
+									"key": "mId",
+									"value": "9",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "A logged-in user can delete a specific review modification request that he sent to the film owner while it is in a pending state."
+					},
+					"response": [
+						{
+							"name": "Successfully Deleted",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict (The modification request is not in a pending status)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "The review modification request identified by mId"
+		},
+		{
+			"name": "api/film/public/reviews/modifications/{mId}/accept",
+			"item": [
+				{
+					"name": "Used to accept a review modification request",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId/accept",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public",
+								"reviews",
+								"modifications",
+								":mId",
+								"accept"
+							],
+							"variable": [
+								{
+									"key": "mId",
+									"value": "3",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "The owner of the film can accept a pending review modification request"
+					},
+					"response": [
+						{
+							"name": "Succesfully accepted",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId/accept",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId",
+										"accept"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId/accept",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId",
+										"accept"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId/accept",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId",
+										"accept"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict (The modification request is not pending)",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId/accept",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId",
+										"accept"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId/accept",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId",
+										"accept"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "The operation to accept a review modification request"
+		},
+		{
+			"name": "api/film/public/reviews/modifications/{mId}/reject",
+			"item": [
+				{
+					"name": "Used to reject review modification request",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId/reject",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public",
+								"reviews",
+								"modifications",
+								":mId",
+								"reject"
+							],
+							"variable": [
+								{
+									"key": "mId",
+									"value": "7",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "The owner of the film can reject a pending review modification request or the deadline is exceded"
+					},
+					"response": [
+						{
+							"name": "Succesfully rejected",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId/reject",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId",
+										"reject"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId/reject",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId",
+										"reject"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId/reject",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId",
+										"reject"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict (Invalid film or reviewerId)",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId/reject",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId",
+										"reject"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/:mId/reject",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										":mId",
+										"reject"
+									],
+									"variable": [
+										{
+											"key": "mId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "The operation to reject a review modification request"
+		},
+		{
+			"name": "api/films/public/reviews/modifications/received",
+			"item": [
+				{
+					"name": "retrieve all the review modification requests received.",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public/reviews/modifications/received?pageNo=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public",
+								"reviews",
+								"modifications",
+								"received"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "1",
+									"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+								}
+							]
+						},
+						"description": "An authenticated user can retrieve all the review modification requests for the public films owned by him. A pagination machanism is used in order to limit the size of the messages."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/received?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										"received"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"totalPages\": 4,\n  \"currentPage\": 1,\n  \"mRequests\": [\n    {\n      \"mId\": 5,\n      \"filmId\": 3,\n      \"reviewerId\": 1,\n      \"deadline\": \"2026-01-15T14:30:00Z\",\n      \"status\": null,\n      \"self\": \"/api/films/public/reviews/modifications/5\",\n      \"review\": \"/api/films/public/3/reviews/1\",\n      \"accept\": \"/api/films/public/reviews/modifications/5/accept\",\n      \"reject\": \"/api/films/public/reviews/modifications/5/reject\",\n      \"delete\": \"/api/films/public/reviews/modifications/5\"\n    },\n    {\n      \"mId\": 7,\n      \"filmId\": 3,\n      \"reviewerId\": 2,\n      \"deadline\": \"2026-01-15T14:30:00Z\",\n      \"status\": null,\n      \"self\": \"/api/films/public/reviews/modifications/7\",\n      \"review\": \"/api/films/public/3/reviews/2\",\n      \"accept\": \"/api/films/public/reviews/modifications/7/accept\",\n      \"reject\": \"/api/films/public/reviews/modifications/7/reject\"\n    }\n  ],\n  \"next\": \"/api/films/public/reviews/modifications/received?pageNo=2\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/received?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										"received"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/received?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										"received"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "The set of review modification requests received"
+		},
+		{
+			"name": "api/films/public/reviews/modifications/status",
+			"item": [
+				{
+					"name": "retrieve the status of all the review modification requests sent.",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"key": "connect.sid",
+								"value": "{{apiKey}}",
+								"in": "header"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/films/public/reviews/modifications/status?pageNo=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"films",
+								"public",
+								"reviews",
+								"modifications",
+								"status"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "1",
+									"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+								}
+							]
+						},
+						"description": "An authenticated user can retrieve the status of all the review modification request that he sent. A pagination machanism is used in order to limit the size of the messages."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/status?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										"status"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"totalPages\": 1,\n  \"currentPage\": 1,\n  \"mRequests\": [\n    {\n      \"mId\": 7,\n      \"filmId\": 3,\n      \"reviewerId\": 2,\n      \"deadline\": \"2026-01-15T14:30:00Z\",\n      \"status\": null,\n      \"self\": \"/api/films/public/reviews/modifications/7\",\n      \"review\": \"/api/films/public/3/reviews/2\",\n      \"delete\": \"/api/films/public/reviews/modifications/7\"\n    },\n    {\n      \"mId\": 8,\n      \"filmId\": 3,\n      \"reviewerId\": 2,\n      \"deadline\": \"2025-01-16T14:30:00Z\",\n      \"status\": true,\n      \"self\": \"/api/films/public/reviews/modifications/8\",\n      \"review\": \"/api/films/public/3/reviews/2\"\n    }\n  ],\n  \"next\": null\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/status?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										"status"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "connect.sid",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/films/public/reviews/modifications/status?pageNo=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"films",
+										"public",
+										"reviews",
+										"modifications",
+										"status"
+									],
+									"query": [
+										{
+											"key": "pageNo",
+											"value": "1",
+											"description": "The number of the requested page. It's optional so if not expessed the first page is returned."
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "The set of review modification requests sent"
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "/"
+		}
+	]
+}

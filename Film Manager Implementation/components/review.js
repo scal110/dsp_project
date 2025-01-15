@@ -11,13 +11,15 @@ class Review{
         if(review)
             this.review=review
 
-        if(showModificationRequests){
-        this.modificationReq="/api/films/public/" + this.filmId + "/reviews/"+ this.reviewerId+"/modifications" ;
-        }
         if(isReviewer && !completed){
             this.delete="/api/films/public/" + this.filmId + "/reviews/" + this.reviewerId                        
         }
         this.film="/api/films/public/" + this.filmId
+
+        if(showModificationRequests){
+        this.modificationReq="/api/films/public/" + this.filmId + "/reviews/"+ this.reviewerId+"/modifications" ;
+        }
+        
 
         this.self= "/api/films/public/" + this.filmId + "/reviews/" + this.reviewerId
     }

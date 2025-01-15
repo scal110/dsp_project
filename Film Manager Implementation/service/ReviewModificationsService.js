@@ -187,7 +187,7 @@ exports.getReviewModificationRequestsReceived = function (req) {
     });
 }
 
-exports.getReviewModificationRequestsaccepted = function (req) {
+exports.getReviewModificationRequestsStatus = function (req) {
     return new Promise((resolve, reject) => {
         const sqlCount = 'SELECT COUNT(*) total FROM review_modifications WHERE reviewerId = ?';
 
