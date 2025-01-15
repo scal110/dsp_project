@@ -102,7 +102,7 @@ app.get('/api/films/private/:filmId',isLoggedIn, filmController.getSinglePrivate
 app.put('/api/films/private/:filmId',isLoggedIn,validate({body:filmschema}),filmController.updateSinglePrivateFilm);
 app.delete('/api/films/private/:filmId',isLoggedIn,filmController.deleteSinglePrivateFilm);
 app.put('/api/films/public/:filmId',isLoggedIn,validate({body:filmschema}),filmController.updateSinglePublicFilm);
-app.delete('/api/films/public/:filmId/reviews/:reviewerId',isLoggedIn,reviewsController.deleteIncompleteReview);
+app.delete('/api/films/public/:filmId/reviews/:reviewerId',isLoggedIn,reviewsController.deleteReviewInvitation);
 app.delete('/api/films/public/:filmId',isLoggedIn,filmController.deleteSinglePublicFilm);
 app.get('/api/films/public/:filmId/reviews',reviewsController.getFilmReviews);
 app.get('/api/films/public/:filmId/reviews/:reviewerId',reviewsController.getSingleReview);

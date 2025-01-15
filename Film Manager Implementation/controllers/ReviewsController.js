@@ -70,8 +70,8 @@ module.exports.completeSingleReview = function completeSingleReviewe(req, res, n
         })
 }
 
-module.exports.deleteIncompleteReview = function deleteIncompleteReview(req, res, next) {
-    Reviews.deleteIncompleteReview(req.params.filmId, req.user.id, req.params.reviewerId)
+module.exports.deleteReviewInvitation = function deleteReviewInvitation(req, res, next) {
+    Reviews.deleteReviewInvitation(req.params.filmId, req.user.id, req.params.reviewerId)
         .then((response) => {
             writer.writeJson(res, response, 204);
         }).catch((error) => {

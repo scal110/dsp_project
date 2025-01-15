@@ -51,7 +51,7 @@ paths:
         - api
       summary: Retrieve the Film Manager
       description: Represents the entry point of the REST interface. No authentication required.
-      operationId: getFilManager
+      operationId: getFilmManager
       responses:
         "200": 
           description: OK
@@ -82,15 +82,15 @@ paths:
                 value:
                   title: Inside Out 2
                   owner: 1
-                  private: true
-                  watchDate: "2024-11-27"
-                  rating : 9
-                  favorite: false
+                  private: false
               example2:
                 value:
                   title: Inception
                   owner: 1
-                  private: false
+                  private: true
+                  watchDate: "2024-11-27"
+                  rating : 9
+                  favorite: false
         required: true
       responses:
         "201":
@@ -105,18 +105,18 @@ paths:
                     id: 10
                     title: Inside Out 2
                     owner: 1
-                    private: true
-                    watchDate: "2024-11-27"
-                    rating : 9
-                    favorite: false
-                    self: /api/films/public/10
+                    private: false                   
+                    reviews: /api/films/public/10/reviews
+                    self: /api/films/public/10                   
                 example2:
                   value:
                     id: 11
                     title: Inception,
                     owner: 1
-                    private: false
-                    reviews: /api/films/public/11/reviews
+                    private: true
+                    watchDate: "2024-11-27"
+                    rating : 9
+                    favorite: false
                     self: /api/films/public/11
         "400":
           description: Bad Request
@@ -128,7 +128,7 @@ paths:
       tags: 
       - "api/films"
       summary: Retrive all the films created by the authenticated user.
-      description: An authenticated user can create all the films that he created.  A pagination machanism is used in order to limit the size of the messages.
+      description: An authenticated user can retrieve all the films that he created.  A pagination machanism is used in order to limit the size of the messages.
       security:
         - cookieAuth: []
       operationId: getOwnedFilms
@@ -694,9 +694,7 @@ paths:
       - "api/films/public/{filmId}/reviews/{reviewerId}"
       operationId: getSingleReview
       summary: retrieve a specific review of a public film.
-      description: A generic user can retrieve a specific completed review of a public film.
-        An authenticated user can retrive an incomplete review if it's assigned to him 
-        or if he is the owner of the film
+      description: A generic user can retrieve a specific review of a public film.
       parameters:
         - name: filmId
           in: path

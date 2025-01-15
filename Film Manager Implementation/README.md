@@ -31,6 +31,7 @@ dsp_exam/Film Manager Implementation/database/databaseV2.db
 Use the following credentials to test the application:
 - **Username**: `user.dsp@polito.it`
 - **Password**: `password`
+
 Other user credentials are availaible in :
 ```
 dsp_exam/Film Manager Implementation/database/passwords_databases.txt
