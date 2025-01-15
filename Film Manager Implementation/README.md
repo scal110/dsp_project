@@ -7,9 +7,8 @@ The Film Manager Service was generated using the [Swagger Codegen](https://githu
 
 ## Running the Server
 
-To install dependencies and launch the server, execute the following commands from the `Film Manager Implementation` directory:
+To install dependencies and launch the server, execute the following command from the `Film Manager Implementation` directory:
 ```bash
-cd dsp_exam/Film Manager Implementation
 npm start
 ```
 
